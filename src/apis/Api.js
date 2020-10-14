@@ -1,7 +1,8 @@
 import axios from "axios";
 
 let baseApi = axios.create({
-  baseURL: "https://qwiz-go-api.herokuapp.com",
+  //baseURL: "https://qwiz-go-api.herokuapp.com",
+  baseURL: process.env.BASE_URL
 });
 
 let Api = function () {
