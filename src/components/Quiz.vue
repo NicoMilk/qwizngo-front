@@ -174,22 +174,25 @@
         </div>
       </b-card-body>
     </b-card>
-
-    <Comments v-if="showComments" :quizId="quiz.id"></Comments>
+    <div v-if="correcting">
+      <Ratings :quizId="quiz.id"></Ratings>
+      <Comments :quizId="quiz.id"></Comments>
+    </div>
   </b-container>
 </template>
 
 <script>
 import Quiz from "../apis/Quiz";
 import Comments from "../components/Comments";
+import Ratings from "../components/Ratings";
 
 export default {
   components: {
     Comments,
+    Ratings,
   },
   data: () => {
     return {
-      showcomments: false,
       running: false,
       correcting: false,
       showOverlay: false,

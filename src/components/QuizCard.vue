@@ -39,12 +39,14 @@
         </small>
         <div class="mw-75">
           <b-form-rating
+            v-if="quiz.avg_rating > 0"
             v-model="quiz.avg_rating"
             no-border
             size="sm"
             variant="info"
             readonly
           ></b-form-rating>
+          <small v-else class="text-muted">0 note</small>
         </div>
       </b-card-text>
     </b-card>

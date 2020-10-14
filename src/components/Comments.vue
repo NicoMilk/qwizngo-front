@@ -1,7 +1,20 @@
 <template>
   <div class="Comments">
-    <h6>Comments</h6>
+    <h5>Ajouter un avis</h5>
 
+    <div v-if="isloggedIn" class="">
+      <b-form-textarea
+        id="textarea-small"
+        size="sm"
+        v-model="newComment"
+        placeholder="Votre commentaire ..."
+      ></b-form-textarea>
+      <b-button @click="sendComment" class="m-2" variant="dark" size="sm"
+        >Envoyer
+      </b-button>
+    </div>
+
+    <div v-else>Connectez-vous pour ajouter des commentaires</div>
     <b-card v-for="comment in comments" :key="comment.id" class="my-2">
       <div class="d-flex justify-content-between">
         <div>
@@ -66,19 +79,6 @@
         </b-container>
       </template>
     </b-modal>
-
-    <div v-if="isloggedIn" class="">
-      <b-form-textarea
-        id="textarea-small"
-        size="sm"
-        v-model="newComment"
-        placeholder="Ajouter un commentaire"
-      ></b-form-textarea>
-      <b-button @click="sendComment" class="m-2" variant="dark" size="sm"
-        >Envoyer</b-button
-      >
-    </div>
-    <div v-else>Connectez-vous pour ajouter des commentaires</div>
   </div>
 </template>
 
