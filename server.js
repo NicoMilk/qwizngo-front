@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(serveStatic(path.join(__dirname, 'dist')))
 }
 
+
 app.get('*', (request, response) => {
   response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
