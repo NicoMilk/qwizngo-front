@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div class="d-flex flex-row flex-wrap justify-content-around">
+    <div class="d-flex flex-row flex-wrap justify-content-around mx-2">
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 px-2 mt-5">
         <div class="card my-2">
-          <div class="card-header text-center">
+          <div class="card-header text-center  bg-theme">
             <div>Mon Compte</div>
           </div>
           <div class="card-body text-center">
             <div class="form-group row">
-              <label for="name" class="col-md-6 col-form-label text-md-right">Nom</label>
+              <label for="name" class="col-md-6 col-form-label text-md-right"
+                >Nom</label
+              >
               <div class="col-md-6">
                 <input
                   v-model="userForm.name"
@@ -23,7 +25,9 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="email" class="col-md-6 col-form-label text-md-right">Adresse E-mail</label>
+              <label for="email" class="col-md-6 col-form-label text-md-right"
+                >Adresse E-mail</label
+              >
               <div class="col-md-6">
                 <input
                   v-model="userForm.email"
@@ -36,18 +40,26 @@
                 <span class="invalid-feedback" role="alert"></span>
               </div>
             </div>
-            <button type="submit" @click.prevent="saveUser" class="btn btn-primary my-4">Envoyer</button>
+            <button
+              type="submit"
+              @click.prevent="saveUser"
+              class="btn btn-primary my-4"
+            >
+              Envoyer
+            </button>
           </div>
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 px-2 mt-5">
         <div class="card my-2">
-          <div class="card-header text-center">
+          <div class="card-header  bg-theme text-center">
             <div>Modifier le mot de passe</div>
           </div>
           <div class="card-body text-center">
             <div class="form-group row">
-              <label for="pass1" class="col-md-6 col-form-label text-md-right">Mot de passe</label>
+              <label for="pass1" class="col-md-6 col-form-label text-md-right"
+                >Mot de passe</label
+              >
               <div class="col-md-6">
                 <input
                   v-model="passForm.password"
@@ -62,10 +74,9 @@
               </div>
             </div>
             <div class="form-group row">
-              <label
-                for="pass2"
-                class="col-md-6 col-form-label text-md-right"
-              >Confirmer mot de passe</label>
+              <label for="pass2" class="col-md-6 col-form-label text-md-right"
+                >Confirmer mot de passe</label
+              >
               <div class="col-md-6">
                 <input
                   v-model="passForm.password2"
@@ -82,7 +93,9 @@
               type="submit"
               @click.prevent="resetPassword"
               class="btn btn-primary my-4"
-            >Changer le mot de passe</button>
+            >
+              Changer le mot de passe
+            </button>
           </div>
         </div>
       </div>
@@ -97,15 +110,15 @@ export default {
     id: "",
     userForm: {
       name: "",
-      email: ""
+      email: "",
     },
     passForm: {
       password: "",
-      password2: ""
-    }
+      password2: "",
+    },
   }),
   mounted() {
-    User.auth().then(response => {
+    User.auth().then((response) => {
       this.id = response.data.id;
       this.userForm.name = response.data.name;
       this.userForm.email = response.data.email;
@@ -117,7 +130,7 @@ export default {
         .then(() => {
           this.$router.push({ name: "Login" });
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response.status === 422) {
             this.errors = error.response.data.errors;
           }
@@ -129,12 +142,12 @@ export default {
           localStorage.removeItem("token");
           this.$router.push({ name: "Login" });
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response.status === 422) {
             this.errors = error.response.data.errors;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
