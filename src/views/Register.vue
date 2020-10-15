@@ -70,18 +70,12 @@
             </div>
             <button
               type="submit"
-              @click.prevent="register"
+              @click="register"
               class="btn btn-primary my-4"
             >
               Créer un compte
             </button>
           </div>
-          <div v-if="errors == 1" class="alert alert-danger mt-2" role="alert">
-            Tous les champs doivent être remplis
-          </div>
-        </div>
-        <div v-if="errors == 2" class="alert alert-danger mt-2" role="alert">
-          Cet email existe déjà, veuillez en entrer un nouveau
         </div>
       </div>
     </div>
@@ -102,6 +96,9 @@ export default {
       password2: "",
     },
   }),
+
+  watch: {},
+
   methods: {
     toast(title, message, faulty = false) {
       this.$root.$bvToast.toast(message, {
@@ -123,15 +120,26 @@ export default {
           //const hashedPwd = bcrypt.hash(password, 10); //
           //this.form.password = hashedPwd; //
           User.register(this.form)
-            .then(() => {
-              this.$router.push({ name: "Login" });
+            .then((response) => {
+              console.log("res data", response.data);
+              if (response.data.error) {
+                this.toast("Erreur!", response.data.error, true);
+              } else {
+                this.$router.push({ name: "Login" });
+              }
             })
             .catch((error) => {
               this.toast("Erreur!", error.message, true);
             });
+        } else {
+          this.toast(
+            "Erreur!",
+            "Le mot de passe et la confirmation doivent être identiques",
+            true
+          );
         }
       } else {
-        this.errors = 1;
+        this.toast("Erreur!", "Tous les champs sont obligatoires", true);
       }
     },
   },

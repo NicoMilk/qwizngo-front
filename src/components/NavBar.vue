@@ -9,7 +9,14 @@
         </router-link>
       </b-navbar-brand>
       <b-navbar-nav>
-        <b-nav-item href="#">Classement</b-nav-item>
+        <b-nav-item href="#">
+          <router-link
+            class="text-decoration-none text-light"
+            :to="{ name: 'Classement' }"
+          >
+            Classement
+          </router-link>
+        </b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -28,7 +35,7 @@
 
             <!--  NOT LOGGED-->
             <div v-if="!isLoggedIn">
-              <b-dropdown-item href="/login">
+              <b-dropdown-item>
                 <b-icon icon="box-arrow-in-right"></b-icon>
                 <router-link
                   class="text-decoration-none text-dark"
@@ -37,7 +44,7 @@
                   Login
                 </router-link>
               </b-dropdown-item>
-              <b-dropdown-item href="/register">
+              <b-dropdown-item>
                 <b-icon icon="person-plus"></b-icon>
                 <router-link
                   class="text-decoration-none text-dark"
@@ -60,9 +67,14 @@
                   Admin
                 </router-link>
               </b-dropdown-item>
-              <b-dropdown-item href="/dashboard">
+              <b-dropdown-item>
                 <b-icon icon="person-circle"></b-icon>
-                Dashboard
+                <router-link
+                  class="text-decoration-none text-dark"
+                  :to="{ name: 'Dashboard' }"
+                >
+                  Dashboard
+                </router-link>
               </b-dropdown-item>
               <b-dropdown-item @click.prevent="logout" href="#">
                 <b-icon icon="box-arrow-right"></b-icon>
