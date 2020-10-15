@@ -225,7 +225,7 @@ export default {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
       const x = _.orderBy(response.data, ['name'], ['asc']); //TODO iteratee name -> lowerCase
-      console.log('LODASH RESPONSE.DATA :', x);
+      // console.log('LODASH RESPONSE.DATA :', x);
       this.users = x;
     });
   },
