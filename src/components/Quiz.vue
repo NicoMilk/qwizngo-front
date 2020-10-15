@@ -198,9 +198,21 @@
       </b-card-header>
       <b-card-body class="p-2">
         <Ratings
+          v-if="this.$store.state.user"
           :quizId="quiz.id"
           :userId="this.$store.state.user.id"
         ></Ratings>
+        <div v-else class="mw-50">
+          <b-form-rating
+            v-if="quiz.avg_rating > 0"
+            v-model="quiz.avg_rating"
+            no-border
+            size="sm"
+            variant="info"
+            readonly
+          ></b-form-rating>
+          <small v-else class="text-muted">pas de note encore</small>
+        </div>
         <Comments :quizId="quiz.id"></Comments>
       </b-card-body>
     </b-card>
@@ -344,7 +356,7 @@ export default {
       });
     },
 
-    classQuestion: function (idx) {
+    classQuestion: function(idx) {
       return {
         "text-danger":
           this.correcting && !this.results.results[idx].is_good_answer,
@@ -353,7 +365,7 @@ export default {
       };
     },
 
-    classAnswer: function (q_index, a_index) {
+    classAnswer: function(q_index, a_index) {
       const user_answser = this.correcting
         ? this.results.results[q_index].user_answers.find(
             (a) => a == a_index
@@ -371,7 +383,7 @@ export default {
     },
   },
   computed: {
-    classBonus: function () {
+    classBonus: function() {
       return {
         "text-danger":
           this.correcting &&
@@ -382,7 +394,7 @@ export default {
           parseInt(this.results.success_rate) > 75,
       };
     },
-    classTimer: function () {
+    classTimer: function() {
       return {
         "text-danger": this.running && this.timeout,
         "text-success": !this.timeout && this.running,
@@ -393,7 +405,7 @@ export default {
           this.chrono.getSeconds() <= 15,
       };
     },
-    classSubmit: function (idx) {
+    classSubmit: function(idx) {
       return {
         "text-warning": this.running && this.questionCount !== this.answerCount,
       };

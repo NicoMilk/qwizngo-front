@@ -1,8 +1,7 @@
 <template>
   <div class="Comments">
-    <h5>Ajouter un avis</h5>
-
     <div v-if="isloggedIn" class="">
+      <h5>Ajouter un avis</h5>
       <b-form-textarea
         id="textarea-small"
         size="sm"
@@ -14,7 +13,11 @@
       </b-button>
     </div>
 
-    <div v-else>Connectez-vous pour ajouter des commentaires</div>
+    <div v-else class="text-center">
+      <b-link to="/login"
+        >Connectez-vous pour noter et ajouter des commentaires</b-link
+      >
+    </div>
     <b-card v-for="comment in comments" :key="comment.id" class="my-2">
       <div class="d-flex justify-content-between">
         <div>
@@ -31,7 +34,7 @@
           v-if="
             ($store.state.user &&
               $store.state.user.email == comment.user_id.email) ||
-            isAdmin
+              isAdmin
           "
         >
           <b-icon
@@ -174,5 +177,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
