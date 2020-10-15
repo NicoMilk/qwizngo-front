@@ -3,6 +3,9 @@ export default {
   getQuizzes() {
     return Api().get("/quizz");
   },
+  getPublishedQuizzes() {
+    return Api().get("/quizz/published");
+  },
   getQuiz(quizId) {
     return Api().get("/quizz/" + quizId);
   },
