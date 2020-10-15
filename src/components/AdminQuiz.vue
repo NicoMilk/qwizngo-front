@@ -1,6 +1,10 @@
 <template>
   <b-container class="py-3">
-    <b-button to="/newquiz" variant="success">Ajouter un Quiz</b-button>
+    <div class="text-center">
+      <b-button to="/newquiz" class="my-4" variant="success"
+        >Ajouter un Quiz</b-button
+      >
+    </div>
 
     <!--Labels -->
     <b-row no-gutter id="labels" class="text-center" align-v="center">

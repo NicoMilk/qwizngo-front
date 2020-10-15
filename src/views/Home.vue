@@ -1,5 +1,5 @@
 <template>
-  <div class="home container col-md-10 mt-4">
+  <div class="home container xcol-md-10 mt-4">
     <div class="d-flex justify-content-between flex-wrap">
       <div class="w-100 mx-2">
         <b-input-group size="lg" class="mb-2 mw-100">
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between flex-wrap">
+    <div class="d-flex justify-content-around flex-wrap">
       <QuizCard v-for="item in quizzes" :key="item.id" :quiz="item"></QuizCard>
     </div>
   </div>
@@ -184,5 +184,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

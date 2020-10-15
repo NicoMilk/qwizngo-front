@@ -1,7 +1,7 @@
 @media (max-width: 576px) {
   .scroll-zone {
     height: calc(100vh - 320px);
-    overflow: scroll;
+    overflow-y: scroll;
   }
 }
 .w-100px {
@@ -13,13 +13,13 @@
 
 .scroll-zone {
   height: calc(100vh - 330px);
-  overflow: scroll;
+  overflow-y: scroll;
 }
-.run-status {
+.xrun-status {
   height: 50px;
   text-align: center;
 }
-.overlay-zone {
+.xoverlay-zone {
   height: 300px;
 }
 .pointer {
@@ -28,6 +28,9 @@
 .card-header {
   background-color: rgba(217, 218, 164, 0.445) !important ;
   color: rgb(82, 82, 82);
+}
+.bg-theme {
+  background-color: rgb(201, 234, 241) !important ;
 }
 
 .nav-pills .router-link-exact-active,
@@ -47,5 +50,5 @@
 html,
 body {
   background-color: #f8f9fa !important;
-  height: 100%;
+  xheight: 100%;
 }

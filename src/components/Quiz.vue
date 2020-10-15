@@ -1,63 +1,117 @@
 <template>
   <b-container class="pt-2 mb-4">
-    <b-row no-gutters align-v="baseline" class="mb-2">
-      <b-col md="6" class="text-center d-flex flex-wrap justify-content-around">
-        <h5>
-          <strong>
-            {{ quiz.name }}
-          </strong>
-        </h5>
-        <div class="h5 text-nowrap text-muted" :class="info">
-          <b-icon icon="gear" variant="info"></b-icon>
-          {{ quiz.category.name }}
-        </div>
-      </b-col>
+    <div class="sticky-top bg-theme mt-2 pb-1 rounded">
+      <b-row no-gutters align-v="center" class="mb-2 pt-2">
+        <b-col
+          md="6"
+          class="text-center d-flex flex-wrap justify-content-around "
+        >
+          <h5>
+            <strong>
+              {{ quiz.name }}
+            </strong>
+          </h5>
+          <div class="h5 text-nowrap text-muted info">
+            <b-icon icon="gear" variant="info"></b-icon>
+            {{ quiz.category.name }}
+          </div>
+        </b-col>
 
-      <b-col md="6" class="d-flex flex-nowrap justify-content-around">
-        <b-icon
-          v-if="quiz.difficulty === 'Facile'"
-          icon="reception1"
-          variant="success"
-          class="h1"
-        ></b-icon>
-        <b-icon
-          v-if="quiz.difficulty === 'Moyen'"
-          icon="reception2"
-          variant="warning"
-          class="h1"
-        ></b-icon>
-        <b-icon
-          v-if="quiz.difficulty === 'Difficile'"
-          icon="reception3"
-          variant="danger"
-          class="h1"
-        ></b-icon>
+        <b-col md="6" class="d-flex flex-nowrap justify-content-around">
+          <b-icon
+            v-if="quiz.difficulty === 'Facile'"
+            icon="reception1"
+            variant="success"
+            class="h1"
+          ></b-icon>
+          <b-icon
+            v-if="quiz.difficulty === 'Moyen'"
+            icon="reception2"
+            variant="warning"
+            class="h1"
+          ></b-icon>
+          <b-icon
+            v-if="quiz.difficulty === 'Difficile'"
+            icon="reception3"
+            variant="danger"
+            class="h1"
+          ></b-icon>
 
-        <div class="align-self-end h5 text-nowrap text-muted">
+          <div class="align-self-end h5 text-nowrap text-muted">
+            <b-icon icon="stopwatch" variant="info"></b-icon>
+            {{ quiz.bonus_time }} min
+          </div>
+          <div class="align-self-end h5 text-nowrap text-muted">
+            <b-icon icon="award" variant="info"></b-icon>+
+            {{ quiz.bonus_xp }} pts
+          </div>
+        </b-col>
+      </b-row>
+      <!-- Running -->
+      <div
+        class="bg-light run-status d-flex flex-row justify-content-around mb-2 pt-2 mx-1 rounded"
+      >
+        <h4>
           <b-icon icon="stopwatch" variant="info"></b-icon>
-          {{ quiz.bonus_time }} min
+          {{ timer | moment("mm:ss") }}
+        </h4>
+        <h4 :class="classBonus">
+          <b-icon icon="alarm" variant="success" :class="classTimer"></b-icon>
+          {{ chrono | moment("mm:ss") }}
+        </h4>
+        <h4 :class="classBonus">
+          <b-icon icon="award" variant="success" :class="classTimer"></b-icon>
+          {{ bonus }} pts
+        </h4>
+      </div>
+
+      <div v-if="!correcting && running" class=" text-center">
+        <b-button
+          class="my-3 px-4 btn-info"
+          @click="submitAnswers"
+          :disabled="
+            this.answerCount == 0 || this.answerCount !== this.questionCount
+          "
+        >
+          <strong>
+            <span :class="classSubmit" class="mr-3">
+              reste à répondre : {{ questionCount - answerCount }}
+            </span>
+            Envoyer &gt;
+          </strong>
+        </b-button>
+      </div>
+    </div>
+    <b-card no-body v-if="correcting" class="mt-2">
+      <b-card-header
+        class="text-center d-inline-block p-0 bg-info text-light pt-2"
+      >
+        <h4 class="mx-1">
+          Résultat <strong>{{ results.success_rate }} %</strong>
+        </h4>
+      </b-card-header>
+      <b-card-body class="d-flex justify-content-around flex-wrap p-4">
+        <div class="d-flex flex-nowrap">
+          <h4><b-icon icon="stopwatch" variant="info" /> Durée &nbsp;</h4>
+          <h4 class="mx-1 text-nowrap">
+            <strong>{{ this.timer | moment("mm:ss") }} min</strong>
+          </h4>
         </div>
-        <div class="align-self-end h5 text-nowrap text-muted">
-          <b-icon icon="award" variant="info"></b-icon>+ {{ quiz.bonus_xp }} pts
+        <div class="d-flex flex-nowrap">
+          <h4 class="mx-1">
+            <b-icon icon="award" variant="info" />
+            xps obtenus &nbsp;
+          </h4>
+          <h4 class="mx-1">
+            <strong>{{ results.score }} points</strong>
+          </h4>
         </div>
-      </b-col>
-    </b-row>
-    <b-card
-      no-body
-      class="run-status d-flex flex-row justify-content-around pt-2 mb-2"
-    >
-      <h4>
-        <b-icon icon="stopwatch" variant="info"></b-icon>
-        {{ timer | moment("mm:ss") }}
-      </h4>
-      <h4 :class="classBonus">
-        <b-icon icon="alarm" variant="success" :class="classTimer"></b-icon>
-        {{ chrono | moment("mm:ss") }}
-      </h4>
-      <h4 :class="classBonus">
-        <b-icon icon="award" variant="success" :class="classTimer"></b-icon>
-        {{ bonus }} pts
-      </h4>
+        <div class="w-100 text-center">
+          <b-button v-b-toggle.questions variant="info" class="mt-3"
+            >Correction</b-button
+          >
+        </div>
+      </b-card-body>
     </b-card>
     <div
       v-if="!running"
@@ -68,7 +122,10 @@
         >Start Quiz</b-button
       >
     </div>
-    <div v-if="running" class="scroll-zone">
+
+    <div></div>
+    <!-- QUESTIONS -->
+    <b-collapse :visible="!correcting" v-if="running" id="questions">
       <b-overlay :show="showOverlay" rounded="sm" class="overlay-zone">
         <div
           v-for="(question, q_index) in questions"
@@ -133,49 +190,16 @@
           </b-card>
         </div>
       </b-overlay>
-    </div>
-    <div v-if="!correcting && running" class="text-center">
-      <b-button
-        class="my-3 px-5 btn-info"
-        @click="submitAnswers"
-        :disabled="
-          this.answerCount == 0 || this.answerCount !== this.questionCount
-        "
-        >Envoyer
-        <span :class="classSubmit"
-          >( reste à répondre : {{ questionCount - answerCount }} )</span
-        ></b-button
-      >
-    </div>
+    </b-collapse>
 
     <b-card no-body v-if="correcting" class="mt-2">
-      <b-card-header
-        class="text-center d-inline-block p-0 bg-info text-light pt-2"
-      >
-        <h3 class="mx-1">
-          Résultat <strong>{{ results.success_rate }} %</strong>
-        </h3>
+      <b-card-header class="text-center p-0 bg-info text-light pt-2">
+        <h4>Réactions</h4>
       </b-card-header>
-      <b-card-body class="d-flex justify-content-around flex-wrap p-4">
-        <div class="d-flex flex-nowrap">
-          <h4><b-icon icon="stopwatch" variant="info" /> Durée &nbsp;</h4>
-          <h4 class="mx-1 text-nowrap">
-            <strong>{{ this.timer | moment("mm:ss") }} min</strong>
-          </h4>
-        </div>
-        <div class="d-flex flex-nowrap">
-          <h4 class="mx-1">
-            <b-icon icon="award" variant="info" />
-            xps obtenus &nbsp;
-          </h4>
-          <h4 class="mx-1">
-            <strong>{{ results.score }} points</strong>
-          </h4>
-        </div>
+      <b-card-body class="p-2">
+        <Comments v-if="showComments" :quizId="quiz.id"></Comments>
       </b-card-body>
     </b-card>
-
-    <Comments v-if="showComments" :quizId="quiz.id"></Comments>
   </b-container>
 </template>
 
@@ -189,7 +213,7 @@ export default {
   },
   data: () => {
     return {
-      showcomments: false,
+      showComments: false,
       running: false,
       correcting: false,
       showOverlay: false,
@@ -315,7 +339,7 @@ export default {
       });
     },
 
-    classQuestion: function (idx) {
+    classQuestion: function(idx) {
       return {
         "text-danger":
           this.correcting && !this.results.results[idx].is_good_answer,
@@ -324,7 +348,7 @@ export default {
       };
     },
 
-    classAnswer: function (q_index, a_index) {
+    classAnswer: function(q_index, a_index) {
       const user_answser = this.correcting
         ? this.results.results[q_index].user_answers.find(
             (a) => a == a_index
@@ -342,7 +366,7 @@ export default {
     },
   },
   computed: {
-    classBonus: function () {
+    classBonus: function() {
       return {
         "text-danger":
           this.correcting &&
@@ -353,7 +377,7 @@ export default {
           parseInt(this.results.success_rate) > 75,
       };
     },
-    classTimer: function () {
+    classTimer: function() {
       return {
         "text-danger": this.running && this.timeout,
         "text-success": !this.timeout && this.running,
@@ -364,7 +388,7 @@ export default {
           this.chrono.getSeconds() <= 15,
       };
     },
-    classSubmit: function (idx) {
+    classSubmit: function(idx) {
       return {
         "text-warning": this.running && this.questionCount !== this.answerCount,
       };

@@ -128,14 +128,14 @@
                 fluid
                 v-b-toggle="'accordion-' + q_index"
                 variant="info"
-                class="p-2 btn-primary d-flex justify-content-between"
+                class="p-2 bg-theme d-flex justify-content-between"
               >
                 <span>Question {{ q_index + 1 }}</span>
 
                 <b-icon
-                  icon="trash-fill"
+                  icon="trash"
                   variant="danger"
-                  class="h4 pt-1 m-0"
+                  class="h4   m-0"
                   @click.prevent="deleteQuestion(q_index)"
                 ></b-icon>
               </b-container>
@@ -190,7 +190,7 @@
                       >Correct</b-form-checkbox
                     >
                     <b-icon
-                      icon="trash-fill"
+                      icon="trash"
                       variant="danger"
                       class="h4 pt-1 m-0 pointer"
                       @click.prevent="deleteAnswer(q_index, a_index)"
