@@ -38,7 +38,8 @@
             icon="trash"
             variant="danger"
             class="pointer"
-            @click="deleteComment(comment.id)"
+            v-b-modal.modalDeleteComment
+            @click="setComment(comment)"
           ></b-icon>
           <b-icon
             icon="pencil"
@@ -50,7 +51,7 @@
         </div>
       </div>
     </b-card>
-
+    <!-- ************* Modal Update comment *************-->
     <b-modal id="modalUpdateComment" title="Modifier le commentaire">
       <b-form-group
         id="input-comment"
@@ -70,7 +71,6 @@
             @click="$bvModal.hide('modalUpdateComment')"
             >Annuler</b-button
           >
-
           <b-button
             @click="updateComment(), $bvModal.hide('modalUpdateComment')"
             variant="success"
@@ -79,6 +79,25 @@
         </b-container>
       </template>
     </b-modal>
+    <!-- ************* END Modal Update comment *************-->
+
+    <!--*****************Modal delete comment ************** -->
+    <b-modal id="modalDeleteComment" centered hide-header hide-footer>
+      <div class="d-block text-center">
+        <p class="my-4">Supprimer le commentaire ?</p>
+      </div>
+      <b-container fluid class="p-2 d-flex justify-content-around">
+        <b-button variant="success" @click="$bvModal.hide('modalDeleteComment')"
+          >Annuler</b-button
+        >
+        <b-button
+          variant="danger"
+          @click="deleteComment(), $bvModal.hide('modalDeleteComment')"
+          >Confirmer</b-button
+        >
+      </b-container>
+    </b-modal>
+    <!--***************** END Modal delete comment ************** -->
   </div>
 </template>
 
@@ -144,9 +163,9 @@ export default {
       });
     },
 
-    deleteComment(id) {
+    deleteComment() {
       //console.log(id);
-      Comments.deleteComment(id).then((response) => {
+      Comments.deleteComment(this.currentComment.id).then((response) => {
         console.log(response.data);
         this.getComments();
       });

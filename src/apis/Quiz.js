@@ -21,4 +21,10 @@ export default {
       user_id: payload.userId,
     });
   },
+  addRating(payload) {
+    return Api().post('/ratings', payload.data)
+  },
+  getUserRating(payload) {
+    return Api().post('/ratings/one', payload.data)
+  }
 };

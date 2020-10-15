@@ -174,8 +174,8 @@
         </div>
       </b-card-body>
     </b-card>
-    <div v-if="correcting">
-      <Ratings :quizId="quiz.id"></Ratings>
+    <div v-if="!correcting">
+      <Ratings :quizId="quiz.id" :userId="this.$store.state.user.id"></Ratings>
       <Comments :quizId="quiz.id"></Comments>
     </div>
   </b-container>

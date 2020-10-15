@@ -1,6 +1,6 @@
 <template>
   <div class="QuizCard my-3 shadow">
-    <b-card style="max-width: 25rem; min-width: 20rem">
+    <b-card class="h-100" style="max-width: 25rem; min-width: 20rem">
       <b-card-text class="d-flex justify-content-between flex-column">
         <div class="d-flex justify-content-between">
           <router-link :to="'/quiz/' + quiz.id" class="text-decoration-none">
