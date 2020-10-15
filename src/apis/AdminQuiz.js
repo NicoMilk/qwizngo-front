@@ -9,6 +9,9 @@ export default {
   getQuizzes() {
     return Api().get("/quizz");
   },
+  getAllQuizzWithStats() {
+    return Api().get("/quizz/stats");
+  },
   getQuiz(quizId) {
     return Api().get("/quizz/" + quizId);
   },

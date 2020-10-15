@@ -199,32 +199,32 @@
 </template>
 
 <script>
-import AdminUser from "../apis/AdminUser.js";
-import User from "../apis/User.js";
-import VueLodash from "vue-lodash";
-import lodash from "lodash";
+import AdminUser from '../apis/AdminUser.js';
+import User from '../apis/User.js';
+import VueLodash from 'vue-lodash';
+import lodash from 'lodash';
 
 export default {
   data() {
     return {
       users: [],
-      currentUser: "",
+      currentUser: '',
       form: {
         // id: null,
-        name: "",
-        email: "",
-        password: "",
-        pwdConfirm: "",
-        role: "user",
+        name: '',
+        email: '',
+        password: '',
+        pwdConfirm: '',
+        role: 'user',
       },
-      roles: ["user", "admin"],
+      roles: ['user', 'admin'],
     };
   },
 
   mounted() {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
-      const x = _.orderBy(response.data, ["name"], ["asc"]); //TODO iteratee name -> lowerCase
+      const x = _.orderBy(response.data, ['name'], ['asc']); //TODO iteratee name -> lowerCase
       //console.log('LODASH RESPONSE.DATA :', x);
       this.users = x;
     });
@@ -240,11 +240,11 @@ export default {
     resetNewUserForm(evt) {
       evt.preventDefault();
       // Reset our form values
-      this.form.name = "";
-      this.form.email = "";
-      this.form.password = "";
-      this.form.pwdConfirm = "";
-      this.form.role = "user";
+      this.form.name = '';
+      this.form.email = '';
+      this.form.password = '';
+      this.form.pwdConfirm = '';
+      this.form.role = 'user';
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
@@ -310,7 +310,7 @@ export default {
         console.log(this.users[idx]);
         const updUser = await AdminUser.updateUser(this.users[idx]);
       } catch (err) {
-        console.error("Error from updUser :", error);
+        console.error('Error from updUser :', error);
       }
     },
 
@@ -326,7 +326,7 @@ export default {
         );
         await this.users.splice(deletedUserIndex, 1);
       } catch (error) {
-        console.error("Error from deleteUser :", error);
+        console.error('Error from deleteUser :', error);
         // }
       }
     },
