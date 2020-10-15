@@ -23,29 +23,11 @@
                 {{ new Date(quiz.created_at).toUTCString().substring(5, 16) }}
               </small>
             </b-col>
-            <!-- <DifficultyIcon :quiz="quiz" /> -->
             <b-col>
-              <b-col v-if="quiz.difficulty === 'Facile'" class="h1" md="1">
-                <b-icon
-                  icon="reception1"
-                  variant="success"
-                  class="mr-1"
-                ></b-icon>
+              <b-col class="h1" md="1">
+                <DifficultyIcon :difficulty="quiz.difficulty" />
               </b-col>
-              <b-col v-if="quiz.difficulty === 'Moyen'" class="h1" md="1">
-                <b-icon
-                  icon="reception2"
-                  variant="warning"
-                  class="mr-1"
-                ></b-icon>
-              </b-col>
-              <b-col v-if="quiz.difficulty === 'Difficile'" class="h1" md="1">
-                <b-icon
-                  icon="reception3"
-                  variant="danger"
-                  class="mr-1"
-                ></b-icon> </b-col
-              ><br />
+              <br />
               <p>
                 Taux de réussite :
               </p>
@@ -98,6 +80,9 @@ import AdminQuiz from '../apis/AdminQuiz';
 import DifficultyIcon from '../components/DifficultyIcon';
 
 export default {
+  components: {
+    DifficultyIcon,
+  },
   data() {
     return {
       quizz: [],
