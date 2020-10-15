@@ -4,7 +4,7 @@
       <b-row no-gutters align-v="center" class="mb-2 pt-2">
         <b-col
           md="6"
-          class="text-center d-flex flex-wrap justify-content-around "
+          class="text-center d-flex flex-wrap justify-content-around"
         >
           <h5>
             <strong>
@@ -65,7 +65,7 @@
         </h4>
       </div>
 
-      <div v-if="!correcting && running" class=" text-center">
+      <div v-if="!correcting && running" class="text-center">
         <b-button
           class="my-3 px-4 btn-info"
           @click="submitAnswers"
@@ -197,7 +197,11 @@
         <h4>Réactions</h4>
       </b-card-header>
       <b-card-body class="p-2">
-        <Comments v-if="showComments" :quizId="quiz.id"></Comments>
+        <Ratings
+          :quizId="quiz.id"
+          :userId="this.$store.state.user.id"
+        ></Ratings>
+        <Comments :quizId="quiz.id"></Comments>
       </b-card-body>
     </b-card>
   </b-container>
@@ -206,14 +210,15 @@
 <script>
 import Quiz from "../apis/Quiz";
 import Comments from "../components/Comments";
+import Ratings from "../components/Ratings";
 
 export default {
   components: {
     Comments,
+    Ratings,
   },
   data: () => {
     return {
-      showComments: false,
       running: false,
       correcting: false,
       showOverlay: false,
@@ -339,7 +344,7 @@ export default {
       });
     },
 
-    classQuestion: function(idx) {
+    classQuestion: function (idx) {
       return {
         "text-danger":
           this.correcting && !this.results.results[idx].is_good_answer,
@@ -348,7 +353,7 @@ export default {
       };
     },
 
-    classAnswer: function(q_index, a_index) {
+    classAnswer: function (q_index, a_index) {
       const user_answser = this.correcting
         ? this.results.results[q_index].user_answers.find(
             (a) => a == a_index
@@ -366,7 +371,7 @@ export default {
     },
   },
   computed: {
-    classBonus: function() {
+    classBonus: function () {
       return {
         "text-danger":
           this.correcting &&
@@ -377,7 +382,7 @@ export default {
           parseInt(this.results.success_rate) > 75,
       };
     },
-    classTimer: function() {
+    classTimer: function () {
       return {
         "text-danger": this.running && this.timeout,
         "text-success": !this.timeout && this.running,
@@ -388,7 +393,7 @@ export default {
           this.chrono.getSeconds() <= 15,
       };
     },
-    classSubmit: function(idx) {
+    classSubmit: function (idx) {
       return {
         "text-warning": this.running && this.questionCount !== this.answerCount,
       };

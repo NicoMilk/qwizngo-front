@@ -78,6 +78,7 @@
 // @ is an alias to /src
 import QuizCard from "@/components/QuizCard.vue";
 import AdminQuiz from "../apis/AdminQuiz";
+import Quiz from "../apis/Quiz";
 import Search from "../apis/Search";
 
 export default {
@@ -120,7 +121,7 @@ export default {
 
   methods: {
     async getAllQuizzes() {
-      AdminQuiz.getQuizzes().then((result) => {
+      Quiz.getPublishedQuizzes().then((result) => {
         this.quizzes = result.data;
       });
     },

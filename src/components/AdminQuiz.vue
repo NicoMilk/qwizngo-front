@@ -62,7 +62,7 @@
           >
             <b-icon
               :icon="quiz.is_published ? 'box-arrow-in-down' : 'box-arrow-up'"
-              variant="light"
+              :variant="quiz.is_published ? 'success' : 'light'"
               class="mr-1"
             ></b-icon>
             {{ quiz.is_published ? "Dépublier" : "Publier" }}
@@ -124,7 +124,8 @@ export default {
       let quizId = this.quizz[idx].id;
       let pubStatus = this.quizz[idx].is_published;
       AdminQuiz.updateQuiz({ quizId, data: { is_published: !pubStatus } }).then(
-        () => {
+        (response) => {
+          console.log(response.data);
           this.quizz[idx].is_published = !pubStatus;
         }
       );

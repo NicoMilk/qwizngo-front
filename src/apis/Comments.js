@@ -11,6 +11,9 @@ export default {
   },
   updateComment(payload) {
     return Api().patch('/comments/' + payload.quizzId, payload.data)
+  },
+  addRating(payload) {
+    return Api().post('/ratings', payload.data)
   }
 
 };

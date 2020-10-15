@@ -14,7 +14,7 @@
     >
       <b-card no-body class="mb-0">
         <!-- Header collapsable -->
-        <b-card-header header-tag="header" role="tab" class="p-0  ">
+        <b-card-header header-tag="header" role="tab" class="p-0">
           <b-container
             fluid
             v-b-toggle="'accordion-' + idx"
@@ -225,7 +225,7 @@ export default {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
       const x = _.orderBy(response.data, ["name"], ["asc"]); //TODO iteratee name -> lowerCase
-      console.log("LODASH RESPONSE.DATA :", x);
+      //console.log('LODASH RESPONSE.DATA :', x);
       this.users = x;
     });
   },
