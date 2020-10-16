@@ -1,5 +1,5 @@
 <template>
-  <div class="home container col-md-10 mt-4">
+  <div class="home container xcol-md-10 mt-4">
     <div class="d-flex justify-content-between flex-wrap">
       <div class="w-100 mx-2">
         <b-input-group size="lg" class="mb-2 mw-100">
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between flex-wrap">
+    <div class="d-flex justify-content-around flex-wrap">
       <QuizCard v-for="item in quizzes" :key="item.id" :quiz="item"></QuizCard>
     </div>
   </div>
@@ -78,6 +78,7 @@
 // @ is an alias to /src
 import QuizCard from "@/components/QuizCard.vue";
 import AdminQuiz from "../apis/AdminQuiz";
+import Quiz from "../apis/Quiz";
 import Search from "../apis/Search";
 
 export default {
@@ -120,7 +121,7 @@ export default {
 
   methods: {
     async getAllQuizzes() {
-      AdminQuiz.getQuizzes().then((result) => {
+      Quiz.getPublishedQuizzes().then((result) => {
         this.quizzes = result.data;
       });
     },
@@ -184,5 +185,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -19,7 +19,7 @@
             fluid
             v-b-toggle="'accordion-' + idx"
             variant="info"
-            class="p-2 bg-light d-flex flex-wrap justify-content-between"
+            class="p-2 bg-theme d-flex flex-wrap justify-content-between"
           >
             <b-col md="3">
               <strong>
@@ -225,7 +225,7 @@ export default {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
       const x = _.orderBy(response.data, ['name'], ['asc']); //TODO iteratee name -> lowerCase
-      console.log('LODASH RESPONSE.DATA :', x);
+      //console.log('LODASH RESPONSE.DATA :', x);
       this.users = x;
     });
   },

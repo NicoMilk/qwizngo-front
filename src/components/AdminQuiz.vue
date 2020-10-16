@@ -1,6 +1,10 @@
 <template>
   <b-container class="py-3">
-    <b-button to="/newquiz" variant="success">Ajouter un Quiz</b-button>
+    <div class="text-center">
+      <b-button to="/newquiz" class="my-4" variant="success"
+        >Ajouter un Quiz</b-button
+      >
+    </div>
 
     <!--Labels -->
     <b-row no-gutter id="labels" class="text-center" align-v="center">
@@ -58,7 +62,7 @@
           >
             <b-icon
               :icon="quiz.is_published ? 'box-arrow-in-down' : 'box-arrow-up'"
-              variant="light"
+              :variant="quiz.is_published ? 'success' : 'light'"
               class="mr-1"
             ></b-icon>
             {{ quiz.is_published ? "Dépublier" : "Publier" }}
@@ -120,7 +124,8 @@ export default {
       let quizId = this.quizz[idx].id;
       let pubStatus = this.quizz[idx].is_published;
       AdminQuiz.updateQuiz({ quizId, data: { is_published: !pubStatus } }).then(
-        () => {
+        (response) => {
+          console.log(response.data);
           this.quizz[idx].is_published = !pubStatus;
         }
       );

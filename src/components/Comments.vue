@@ -1,7 +1,23 @@
 <template>
   <div class="Comments">
-    <h6>Comments</h6>
+    <div v-if="isloggedIn" class="">
+      <h5>Ajouter un avis</h5>
+      <b-form-textarea
+        id="textarea-small"
+        size="sm"
+        v-model="newComment"
+        placeholder="Votre commentaire ..."
+      ></b-form-textarea>
+      <b-button @click="sendComment" class="m-2" variant="dark" size="sm"
+        >Envoyer
+      </b-button>
+    </div>
 
+    <div v-else class="text-center">
+      <b-link to="/login"
+        >Connectez-vous pour noter et ajouter des commentaires</b-link
+      >
+    </div>
     <b-card v-for="comment in comments" :key="comment.id" class="my-2">
       <div class="d-flex justify-content-between">
         <div>
@@ -18,14 +34,15 @@
           v-if="
             ($store.state.user &&
               $store.state.user.email == comment.user_id.email) ||
-            isAdmin
+              isAdmin
           "
         >
           <b-icon
             icon="trash"
             variant="danger"
             class="pointer"
-            @click="deleteComment(comment.id)"
+            v-b-modal.modalDeleteComment
+            @click="setComment(comment)"
           ></b-icon>
           <b-icon
             icon="pencil"
@@ -37,7 +54,7 @@
         </div>
       </div>
     </b-card>
-
+    <!-- ************* Modal Update comment *************-->
     <b-modal id="modalUpdateComment" title="Modifier le commentaire">
       <b-form-group
         id="input-comment"
@@ -57,7 +74,6 @@
             @click="$bvModal.hide('modalUpdateComment')"
             >Annuler</b-button
           >
-
           <b-button
             @click="updateComment(), $bvModal.hide('modalUpdateComment')"
             variant="success"
@@ -66,19 +82,25 @@
         </b-container>
       </template>
     </b-modal>
+    <!-- ************* END Modal Update comment *************-->
 
-    <div v-if="isloggedIn" class="">
-      <b-form-textarea
-        id="textarea-small"
-        size="sm"
-        v-model="newComment"
-        placeholder="Ajouter un commentaire"
-      ></b-form-textarea>
-      <b-button @click="sendComment" class="m-2" variant="dark" size="sm"
-        >Envoyer</b-button
-      >
-    </div>
-    <div v-else>Connectez-vous pour ajouter des commentaires</div>
+    <!--*****************Modal delete comment ************** -->
+    <b-modal id="modalDeleteComment" centered hide-header hide-footer>
+      <div class="d-block text-center">
+        <p class="my-4">Supprimer le commentaire ?</p>
+      </div>
+      <b-container fluid class="p-2 d-flex justify-content-around">
+        <b-button variant="success" @click="$bvModal.hide('modalDeleteComment')"
+          >Annuler</b-button
+        >
+        <b-button
+          variant="danger"
+          @click="deleteComment(), $bvModal.hide('modalDeleteComment')"
+          >Confirmer</b-button
+        >
+      </b-container>
+    </b-modal>
+    <!--***************** END Modal delete comment ************** -->
   </div>
 </template>
 
@@ -144,9 +166,9 @@ export default {
       });
     },
 
-    deleteComment(id) {
+    deleteComment() {
       //console.log(id);
-      Comments.deleteComment(id).then((response) => {
+      Comments.deleteComment(this.currentComment.id).then((response) => {
         console.log(response.data);
         this.getComments();
       });
@@ -155,5 +177,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

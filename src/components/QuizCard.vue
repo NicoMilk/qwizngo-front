@@ -1,6 +1,6 @@
 <template>
   <div class="QuizCard my-3 shadow">
-    <b-card style="max-width: 25rem; min-width: 20rem">
+    <b-card class="h-100" style="max-width: 25rem; min-width: 20rem">
       <b-card-text class="d-flex justify-content-between flex-column">
         <div class="d-flex justify-content-between">
           <router-link :to="'/quiz/' + quiz.id" class="text-decoration-none">
@@ -39,12 +39,14 @@
         </small>
         <div class="mw-75">
           <b-form-rating
+            v-if="quiz.avg_rating > 0"
             v-model="quiz.avg_rating"
             no-border
             size="sm"
             variant="info"
             readonly
           ></b-form-rating>
+          <small v-else class="text-muted">0 note</small>
         </div>
       </b-card-text>
     </b-card>
