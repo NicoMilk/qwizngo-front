@@ -50,13 +50,13 @@
               </div>
             </div>
 
-            <div
+            <!--             <div
               v-if="errors == 1"
               class="alert alert-danger mt-4"
               role="alert"
             >
               L'email ou le mot de passe est incorrect
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -77,6 +77,14 @@ export default {
     },
   }),
   methods: {
+    toast(title, message, faulty = false) {
+      this.$root.$bvToast.toast(message, {
+        title: title,
+        toaster: "b-toaster-top-center",
+        variant: faulty ? "danger" : "success",
+        appendToast: true,
+      });
+    },
     login() {
       User.login(this.form)
         .then((response) => {
@@ -90,7 +98,7 @@ export default {
         .catch((error) => {
           console.log(error);
           if (error.response.status) {
-            this.errors = 1;
+            this.toast("Erreur!", "Mot de passe ou email incorrect", true);
           }
         });
     },
