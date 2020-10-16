@@ -119,7 +119,7 @@
       vertical-align="center"
     >
       <b-button pill variant="success" size="lg" @click="startQuiz" class="mx-5"
-        >Start Quiz</b-button
+        >Démarrer le Quiz</b-button
       >
     </div>
 
@@ -356,7 +356,7 @@ export default {
       });
     },
 
-    classQuestion: function(idx) {
+    classQuestion: function (idx) {
       return {
         "text-danger":
           this.correcting && !this.results.results[idx].is_good_answer,
@@ -365,7 +365,7 @@ export default {
       };
     },
 
-    classAnswer: function(q_index, a_index) {
+    classAnswer: function (q_index, a_index) {
       const user_answser = this.correcting
         ? this.results.results[q_index].user_answers.find(
             (a) => a == a_index
@@ -383,7 +383,7 @@ export default {
     },
   },
   computed: {
-    classBonus: function() {
+    classBonus: function () {
       return {
         "text-danger":
           this.correcting &&
@@ -394,7 +394,7 @@ export default {
           parseInt(this.results.success_rate) > 75,
       };
     },
-    classTimer: function() {
+    classTimer: function () {
       return {
         "text-danger": this.running && this.timeout,
         "text-success": !this.timeout && this.running,
@@ -405,7 +405,7 @@ export default {
           this.chrono.getSeconds() <= 15,
       };
     },
-    classSubmit: function(idx) {
+    classSubmit: function (idx) {
       return {
         "text-warning": this.running && this.questionCount !== this.answerCount,
       };
