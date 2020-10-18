@@ -104,10 +104,8 @@
                   precision="2"
                 ></b-form-rating
                 ><br />
-                <!-- <p>
-                Commentaires : XXX
-              </p>
-              <br /> -->
+                <p>Commentaires : {{ quiz.commentsCount }}</p>
+                <br />
                 <!-- <p>Joué {{ quiz.playcount }} fois</p>
               <br /> -->
                 <!-- <b-icon icon="heart-fill" variant="danger"></b-icon>
