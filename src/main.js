@@ -18,47 +18,45 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
-
 //vérifie le statut de connexion avant de rediriger vers une route
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requireAdmin)) {
+  if (to.matched.some((record) => record.meta.requireAdmin)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters.isAdmin) {
       next({
-        path: '/',
-        query: { redirect: to.fullPath }
-      })
+        path: "/",
+        query: { redirect: to.fullPath },
+      });
     } else {
-      next()
+      next();
     }
-  } else if (to.matched.some(record => record.meta.requireAuth)) {
+  } else if (to.matched.some((record) => record.meta.requireAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters.loggedIn) {
       next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
     } else {
-      next()
+      next();
     }
-  } else if (to.matched.some(record => record.meta.requireNew)) {
+  } else if (to.matched.some((record) => record.meta.requireNew)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (store.getters.loggedIn) {
       next({
-        path: '/',
-        query: { redirect: to.fullPath }
-      })
+        path: "/",
+        query: { redirect: to.fullPath },
+      });
     } else {
-      next()
+      next();
     }
   } else {
-    next() // make sure to always call next()!
+    next(); // make sure to always call next()!
   }
-})
-
+});
 
 new Vue({
   router,

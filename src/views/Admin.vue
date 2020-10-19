@@ -38,7 +38,7 @@ export default {
       isAdmin: false,
     };
   },
-  xmounted() {
+  mounted() {
     console.log(this.$store.state);
     this.isAdmin = this.$store.state.user
       ? this.$store.state.user.role == "admin"
