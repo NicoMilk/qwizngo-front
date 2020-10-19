@@ -47,7 +47,7 @@
                 <br />
                 <b-button
                   :to="'/editquiz/' + quiz.id"
-                  variant="warning"
+                  variant="info"
                   class="btn-block"
                 >
                   <b-icon icon="pencil" variant="dark" class="mr-1"></b-icon>
@@ -55,7 +55,7 @@
                 ><br />
                 <b-button
                   :id="quiz.id"
-                  :variant="quiz.is_published ? 'outline-success' : 'success'"
+                  :variant="quiz.is_published ? 'outline-danger' : 'danger'"
                   class="btn-block"
                   @click="publishToggle(idx)"
                 >
@@ -63,7 +63,7 @@
                     :icon="
                       quiz.is_published ? 'box-arrow-in-down' : 'box-arrow-up'
                     "
-                    :variant="quiz.is_published ? 'success' : 'light'"
+                    :variant="quiz.is_published ? 'danger' : 'light'"
                     class="mr-1"
                   ></b-icon>
                   {{ quiz.is_published ? 'Dépublier' : 'Publier' }}
