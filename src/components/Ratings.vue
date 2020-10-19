@@ -21,7 +21,10 @@
     </div>
     <div v-else class="d-flex justify-content-start align-items-center">
       <div>
-        <h5 class="my-auto">Votre évaluation du quiz</h5>
+        <small class="my-auto"
+          >Votre évaluation du
+          {{ currentRating.date | moment("dddd DD MMMM YYYY") }}</small
+        >
       </div>
 
       <div>
@@ -36,7 +39,6 @@
         >
         </b-form-rating>
       </div>
-      <small>Publiée le {{ postDate }}</small>
     </div>
   </div>
 </template>
@@ -69,7 +71,7 @@ export default {
   },
 
   watch: {
-    rating: function () {
+    rating: function() {
       this.addRating();
     },
   },
@@ -108,5 +110,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
