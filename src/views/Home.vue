@@ -53,6 +53,7 @@ import QuizCard from "@/components/QuizCard.vue";
 import AdminQuiz from "../apis/AdminQuiz";
 import Quiz from "../apis/Quiz";
 import Search from "../apis/Search";
+import User from "../apis/User";
 
 export default {
   name: "Home",
@@ -90,10 +91,14 @@ export default {
   },
 
   beforeMount() {
+    //this.getAuth();
     this.getAllQuizzes();
   },
 
   updated() {
+    /*     if (this.$store.getters.loggedIn && !this.$store.state.user) {
+      this.getAuth();
+    } */
     //this.getAllQuizzes();
   },
 
@@ -146,15 +151,6 @@ export default {
         this.quizzes = result.data;
       });
     },
-
-    /*     async sort() {
-      const payload = {};
-      payload.sort = this.sorting;
-      Search.sortQuiz({ data: payload }).then((result) => {
-        //console.log(result.data);
-        this.quizzes = result.data;
-      });
-    }, */
 
     reset() {
       this.selectedLang = null;

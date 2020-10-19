@@ -26,6 +26,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requireAdmin)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
+
     if (!store.getters.isAdmin) {
       next({
         path: "/",

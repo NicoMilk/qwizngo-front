@@ -1,11 +1,6 @@
 <template>
   <div>
-    <div
-      class="container px-0 py-4"
-      v-if="
-        this.$store.state.user ? this.$store.state.user.role == 'admin' : false
-      "
-    >
+    <div class="container px-0 py-4">
       <nav class="nav nav-pills flex-column flex-sm-row nav-justified">
         <router-link
           :to="{ path: '/admin' }"
@@ -25,7 +20,7 @@
       </nav>
       <router-view></router-view>
     </div>
-    <div v-else class="my-5 text-center"></div>
+    <div class="my-5 text-center"></div>
   </div>
 </template>
 
