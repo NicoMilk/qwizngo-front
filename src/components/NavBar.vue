@@ -12,7 +12,7 @@
         <b-nav-item href="#">
           <router-link
             class="text-decoration-none text-light"
-            :to="{ name: 'Classement' }"
+            :to="{ name: 'Ranking' }"
           >
             Classement
           </router-link>
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import User from "../apis/User";
+import User from '../apis/User';
 
 export default {
   data() {
@@ -112,7 +112,7 @@ export default {
       if (this.$store.state.user) {
         return this.$store.state.user.name;
       } else {
-        return "User";
+        return 'User';
       }
     },
   },
@@ -140,32 +140,32 @@ export default {
 
   methods: {
     logout() {
-      console.log("out");
-      localStorage.removeItem("token");
-      this.$store.commit("setToken", null);
-      this.$store.commit("setStatus", null);
-      this.$store.commit("setUser", null);
+      console.log('out');
+      localStorage.removeItem('token');
+      this.$store.commit('setToken', null);
+      this.$store.commit('setStatus', null);
+      this.$store.commit('setUser', null);
       //this.user = null;
       //this.isLoggedIn = false;
       //this.isAdmin = false;
-      this.$router.push("/");
+      this.$router.push('/');
     },
 
     getAuth() {
-      this.$root.$on("login", () => {
+      this.$root.$on('login', () => {
         this.isLoggedIn = true;
       });
 
-      this.isLoggedIn = !!localStorage.getItem("token");
+      this.isLoggedIn = !!localStorage.getItem('token');
 
       if (this.isLoggedIn) {
         User.auth().then((response) => {
           //console.log(response.data);
           //localStorage.setItem("user", response.data);
-          this.$store.commit("setUser", response.data);
+          this.$store.commit('setUser', response.data);
           this.$store.state.user = response.data;
           //this.$store.commit("setUser", localStorage.getItem("user"));
-          this.$store.commit("setStatus", response.data.role);
+          this.$store.commit('setStatus', response.data.role);
           this.$store.state.status = response.data.role;
           //localStorage.setItem("role", response.data.role);
           //this.user = response.data;
