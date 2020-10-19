@@ -27,12 +27,12 @@ export default new Vuex.Store({
       return state.access_token !== null
     },
     isAdmin(state) {
-      if (state.status === "admin") {
-        return true;
-      } else if (state.status === "user") {
-        return false
-      }
-      //return state.status !== null
+      /*       if (state.status === "admin") {
+              return true;
+            } else if (state.status === "user") {
+              return false
+            } */
+      return state.status !== null
     },
   },
 

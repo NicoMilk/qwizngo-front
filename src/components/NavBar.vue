@@ -117,31 +117,11 @@ export default {
     },
   },
 
-  /*   xupdated() {
-    if (this.isLoggedIn && !this.user) {
-      User.auth().then((response) => {
-        this.user = response.data;
-        this.isAdmin = this.user.role == "admin";
-      });
-    }
-  },
-  mounted() {
-    this.$root.$on("login", () => {
-      this.isLoggedIn = true;
-    });
-    this.isLoggedIn = !!localStorage.getItem("token");
-    if (this.isLoggedIn) {
-      User.auth().then((response) => {
-        this.user = response.data;
-        this.isAdmin = this.user.role == "admin";
-      });
-    }
-  }, */
-
   methods: {
     logout() {
       console.log("out");
       localStorage.removeItem("token");
+      localStorage.removeItem("status");
       this.$store.commit("setToken", null);
       this.$store.commit("setStatus", null);
       this.$store.commit("setUser", null);
@@ -165,8 +145,13 @@ export default {
           this.$store.commit("setUser", response.data);
           this.$store.state.user = response.data;
           //this.$store.commit("setUser", localStorage.getItem("user"));
-          this.$store.commit("setStatus", response.data.role);
-          this.$store.state.status = response.data.role;
+          if (response.data.role === "admin") {
+            console.log("is admin");
+            localStorage.setItem("status", response.data.role);
+            this.$store.commit("setStatus", response.data.role);
+            this.$store.state.status = response.data.role;
+          }
+
           //localStorage.setItem("role", response.data.role);
           //this.user = response.data;
           //this.isAdmin = this.user.role == "admin";
