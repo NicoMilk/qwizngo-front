@@ -85,3 +85,21 @@ body {
   background-color: #f8f9fa !important;
   xheight: 100%;
 }
+
+.currentUserRankCard {
+  background-color: rgb(228, 255, 215) !important;
+}
+
+.scrollToUserRank {
+  position: fixed;
+  left: 40px;
+  bottom: 60px;
+  color: green;
+}
+
+.scrollToTop {
+  position: fixed;
+  right: 40px;
+  bottom: 60px;
+  color: orange;
+}
