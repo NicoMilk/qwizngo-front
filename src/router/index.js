@@ -13,6 +13,7 @@ import AdminUser from "../components/AdminUser.vue";
 import AdminStats from "../components/AdminStats.vue";
 import MyAccount from "../components/MyAccount.vue";
 import MyDashboard from "../components/MyDashboard.vue";
+import Ranking from "../views/Ranking.vue";
 
 //import Favorites from "../components/Favorites.vue";
 
@@ -86,6 +87,11 @@ const routes = [
       }
     ]
   }, 
+  {
+    path: "/ranking",
+    name: "Ranking",
+    component: Ranking
+  }
 ];
 
 const router = new VueRouter({

@@ -7,8 +7,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueMoment from "vue-moment";
 import moment from "moment";
+import VueScrollTo from "vue-scrollto";
 
 require("moment/locale/fr");
+
+Vue.use(VueScrollTo)
 
 Vue.use(VueMoment, {
   moment,
