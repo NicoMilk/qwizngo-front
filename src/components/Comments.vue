@@ -129,7 +129,9 @@ export default {
 
   methods: {
     getComments() {
-      Comments.getComments(this.$route.params.quiz_id).then((response) => {
+      Comments.getComments(
+        this.$route.params.quiz_id || this.$props.quizId
+      ).then((response) => {
         //console.log(response.data);
         this.comments = response.data;
       });
@@ -139,7 +141,7 @@ export default {
       Comments.postComment({
         data: {
           user_id: this.$store.state.user.id,
-          quizz_id: this.$route.params.quiz_id,
+          quizz_id: this.$route.params.quiz_id || this.$props.quizId,
           comment: this.newComment,
         },
       }).then((response) => {

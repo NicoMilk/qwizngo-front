@@ -56,6 +56,9 @@
 .bg-theme {
   background-color: rgb(201, 234, 241) !important ;
 }
+
+.table.b-table.b-table-stacked-md > tbody > tr > [data-label]::before,
+th,
 .text-theme,
 .text-theme,
 .text-theme:visited {
@@ -76,14 +79,17 @@
   font-size: large !important;
 }
 
-.xxcard {
-  box-shadow: 0 0 8px rgba(131, 80, 80, 0.1) !important;
+.flag {
+  filter: drop-shadow(2px 3px 7px rgba(0, 0, 0, 0.37));
 }
 
 html,
 body {
   background-color: #f8f9fa !important;
-  xheight: 100%;
+}
+
+.x-button {
+  width: 36px !important;
 }
 
 .currentUserRankCard {

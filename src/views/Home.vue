@@ -2,14 +2,20 @@
   <div class="home container mt-0">
     <div class="mb-3 search-parent p-2 d-flex justify-content-between">
       <b-row class="search-bar flex-fill">
-        <b-col md="3">
-          <b-form-input
-            @input="search_text"
-            @keypress.enter="searchAll"
-            v-model="search.text"
-            type="text"
-            placeholder="Recherche par titre"
-          ></b-form-input>
+        <b-col md="5">
+          <b-input-group size="md"
+            ><b-form-input
+              @keypress.enter="searchAll"
+              v-model="searchItem"
+              type="text"
+              placeholder="Recherche par titre"
+            ></b-form-input
+            ><b-input-group-append class="x-button">
+              <b-button variant="info" @click="reset"
+                ><strong>x</strong></b-button
+              >
+            </b-input-group-append></b-input-group
+          >
           <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon>
         </b-col>
         <b-col md="3">
@@ -20,7 +26,7 @@
             size="md"
           />
         </b-col>
-        <b-col xs="6" md="3">
+        <b-col md="2">
           <div>
             <b-form-select
               @change="searchAll"
@@ -30,7 +36,7 @@
             />
           </div>
         </b-col>
-        <b-col xs="6" md="3">
+        <b-col md="2">
           <b-form-select
             @change="searchAll"
             v-model="sorting"
@@ -113,28 +119,6 @@ export default {
       });
     },
 
-    /*     async filter(field) {
-      const payload = {};
-      payload.field = field;
-      if (field === "category") {
-        payload.query = this.selectedLang;
-      } else {
-        payload.query = this.selectedLevel;
-      }
-      Search.filterQuiz({ data: payload }).then(
-        (result) => (this.quizzes = result.data)
-      );
-    }, */
-
-    /*     async search() {
-      console.log("search function")
-      const payload = {};
-      payload.query = this.searchItem;
-      Search.searchQuiz({ data: payload }).then(
-        (result) => (this.quizzes = result.data)
-      );
-    }, */
-
     async searchAll() {
       const payload = {};
       if (this.searchItem) {
@@ -153,9 +137,9 @@ export default {
     },
 
     reset() {
-      this.selectedLang = null;
-      this.selectedLevel = null;
-      this.searchItem = null;
+      this.selectedLang = "";
+      this.selectedLevel = "";
+      this.searchItem = "";
       this.sorting = "desc";
       this.getAllQuizzes();
     },

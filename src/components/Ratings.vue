@@ -81,7 +81,7 @@ export default {
       Quiz.addRating({
         data: {
           user_id: this.userId,
-          quizz_id: this.$route.params.quiz_id,
+          quizz_id: this.$route.params.quiz_id || this.$props.quizId,
           rating: this.rating,
         },
       }).then((response) => {
@@ -94,7 +94,7 @@ export default {
       Quiz.getUserRating({
         data: {
           user_id: this.userId,
-          quizz_id: this.$route.params.quiz_id,
+          quizz_id: this.$route.params.quiz_id || this.$props.quizId,
         },
       }).then((response) => {
         //console.log(response.data);
