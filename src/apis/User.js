@@ -17,8 +17,5 @@ export default {
   },
   saveFavorites(id, favs) {
     return Api().patch("/users/" + id, { favorites: favs });
-  }/*,
-  getSuggestion(userId) {
-    return Api().get("/users/suggestions/" + userId);
-  }*/
+  },
 };
