@@ -95,6 +95,7 @@ body {
   left: 40px;
   bottom: 60px;
   color: green;
+  opacity: 25%;
 }
 
 .scrollToTop {
@@ -102,4 +103,5 @@ body {
   right: 40px;
   bottom: 60px;
   color: orange;
+  opacity: 25%;
 }

@@ -1,10 +1,11 @@
 <template>
-  <b-container id="top" class="py-3">
+  <b-container id="top" class="py-3 text-center">
     <b-col class="sticky-top ">
       <h1 class="bg-light my-4">CLASSEMENT :</h1>
     </b-col>
 
     <!-- CURRENT USER CARD -->
+    <!-- TODO REMOVE IF NOT USED -->
     <!-- <b-card
         style="max-width: 30rem;"
         class="mb-4 text-center pointer"
@@ -111,7 +112,7 @@ export default {
       users: [],
       usersRanks: [],
       currentUser: {},
-      currentUserRank: null,
+      // currentUserRank: null,
       showBackToTop: null,
     };
   },
@@ -127,12 +128,13 @@ export default {
     this.currentUser = currentUser.data;
     // console.log('CURRENT USER :', this.currentUser);
 
-    const plop = await this.users
-      .map((user) => user.id)
-      .indexOf(this.currentUser.id);
-    this.currentUserRank = plop + 1;
+    // const plop = await this.users
+    //   .map((user) => user.id)
+    //   .indexOf(this.currentUser.id);
+    // this.currentUserRank = plop + 1;
     // console.log('CURRENT USER RANK:', this.currentUserRank);
 
+    // autoScroll options :
     var options = {
       // container: '#container',
       easing: 'ease-in-out',
@@ -146,7 +148,5 @@ export default {
     var autoScroll = this.$scrollTo('#x' + this.currentUser.id, options);
     // console.log('AUTOSCROLL :', autoScroll);
   },
-
-  methods: {},
 };
 </script>
