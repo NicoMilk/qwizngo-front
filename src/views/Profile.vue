@@ -3,7 +3,7 @@
     <div class="container px-0 py-4">
       <nav class="nav nav-pills flex-column flex-sm-row nav-justified">
         <router-link
-          :to="{ path: '/dashboard' }"
+          :to="{ name: '/dashboard' }"
           class="flex-sm-fill text-center nav-link mx-3"
           >My Dashboard</router-link
         >
