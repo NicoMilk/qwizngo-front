@@ -18,25 +18,9 @@
         </b-col>
 
         <b-col md="6" class="d-flex flex-nowrap justify-content-around">
-          <b-icon
-            v-if="quiz.difficulty === 'Facile'"
-            icon="reception1"
-            variant="success"
-            class="h1"
-          ></b-icon>
-          <b-icon
-            v-if="quiz.difficulty === 'Moyen'"
-            icon="reception2"
-            variant="warning"
-            class="h1"
-          ></b-icon>
-          <b-icon
-            v-if="quiz.difficulty === 'Difficile'"
-            icon="reception3"
-            variant="danger"
-            class="h1"
-          ></b-icon>
-
+          <div class="h1 mb-0" md="1">
+            <DifficultyIcon :difficulty="quiz.difficulty"></DifficultyIcon>
+          </div>
           <div class="align-self-end h5 text-nowrap text-muted">
             <b-icon icon="stopwatch" variant="info"></b-icon>
             {{ quiz.bonus_time }} min
@@ -192,7 +176,13 @@
       </b-overlay>
     </b-collapse>
 
-    <b-card no-body v-if="correcting" class="mt-2">
+    <b-card
+      no-body
+      v-if="
+        correcting || (this.$store.state.user && this.$store.getters.isAdmin)
+      "
+      class="mt-2"
+    >
       <b-card-header class="text-center p-0 bg-info text-light pt-2">
         <h4>Réactions</h4>
       </b-card-header>
@@ -223,9 +213,11 @@
 import Quiz from "../apis/Quiz";
 import Comments from "../components/Comments";
 import Ratings from "../components/Ratings";
+import DifficultyIcon from "../components/DifficultyIcon";
 
 export default {
   components: {
+    DifficultyIcon,
     Comments,
     Ratings,
   },
@@ -335,6 +327,7 @@ export default {
         answers: this.answers,
         timeout: this.timeout,
       });
+
       this.correcting = true;
       this.results = getResults.data;
       this.bonus =
@@ -344,7 +337,6 @@ export default {
       this.xps = getResults.data.results.map((result) => result.xps);
 
       this.showComments = true;
-      //console.log("res", getResults.data.results);
     },
 
     toast(title, message, faulty = false) {

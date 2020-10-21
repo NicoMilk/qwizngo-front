@@ -1,71 +1,50 @@
 <template>
-  <div class="home container xcol-md-10 mt-4">
-    <div class="d-flex justify-content-between flex-wrap">
-      <div class="w-100 mx-2">
-        <b-input-group size="lg" class="mb-2 mw-100">
-          <b-input-group-prepend>
-            <button style="width: 3rem" @click="searchAll">
-              <b-icon icon="search"></b-icon>
-            </button>
-          </b-input-group-prepend>
-          <b-form-input
-            type="search"
-            placeholder="Search terms"
-            v-model="searchItem"
-            @keypress.enter="searchAll"
-          ></b-form-input>
-        </b-input-group>
-      </div>
-      <div
-        class="d-flex justify-content-around align-items-center flex-wrap w-100"
-      >
-        <div class="mx-2">
+  <div class="home container mt-0">
+    <div class="mb-3 search-parent p-2 d-flex justify-content-between">
+      <b-row class="search-bar flex-fill">
+        <b-col md="5">
+          <b-input-group size="md"
+            ><b-form-input
+              @keypress.enter="searchAll"
+              v-model="searchItem"
+              type="text"
+              placeholder="Recherche par titre"
+            ></b-form-input
+            ><b-input-group-append class="x-button">
+              <b-button variant="info" @click="reset"
+                ><strong>x</strong></b-button
+              >
+            </b-input-group-append></b-input-group
+          >
+          <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon>
+        </b-col>
+        <b-col md="3">
           <b-form-select
             @change="searchAll"
             v-model="selectedLang"
             :options="options"
-            class="mb-3"
-            size="lg"
-          >
-            <template v-slot:first>
-              <b-form-select-option :value="null" disabled
-                >Filtrer par langage</b-form-select-option
-              >
-            </template>
-          </b-form-select>
-        </div>
-        <div class="mx-2">
-          <b-form-select
-            @change="searchAll"
-            v-model="selectedLevel"
-            :options="niveau"
-            class="mb-3"
-            size="lg"
-          >
-            <!-- This slot appears above the options from 'options' prop -->
-            <template v-slot:first>
-              <b-form-select-option :value="null" disabled
-                >Filtrer par niveau</b-form-select-option
-              >
-            </template>
-          </b-form-select>
-        </div>
-
-        <div class="mx-2">
+            size="md"
+          />
+        </b-col>
+        <b-col md="2">
+          <div>
+            <b-form-select
+              @change="searchAll"
+              v-model="selectedLevel"
+              :options="niveau"
+              size="md"
+            />
+          </div>
+        </b-col>
+        <b-col md="2">
           <b-form-select
             @change="searchAll"
             v-model="sorting"
             :options="tri"
-            class="mb-3"
-            size="lg"
-          >
-            <!-- This slot appears above the options from 'options' prop -->
-            <template v-slot:first> </template>
-          </b-form-select>
-        </div>
-
-        <button @click="reset" class="btn-dark">Reset</button>
-      </div>
+            size="md"
+          />
+        </b-col>
+      </b-row>
     </div>
 
     <div class="d-flex justify-content-around flex-wrap">
@@ -80,6 +59,7 @@ import QuizCard from "@/components/QuizCard.vue";
 import AdminQuiz from "../apis/AdminQuiz";
 import Quiz from "../apis/Quiz";
 import Search from "../apis/Search";
+import User from "../apis/User";
 
 export default {
   name: "Home",
@@ -88,13 +68,16 @@ export default {
   },
   data() {
     return {
+      search: { filter: null, text: "" },
+      categories: [],
       quizzes: [],
-      selectedLang: null,
-      selectedLevel: null,
+      selectedLang: "",
+      selectedLevel: "",
       searchItem: null,
       sorting: "desc",
       options: [],
       niveau: [
+        { value: "", text: "Niveau : tous" },
         { value: "Facile", text: "Facile" },
         { value: "Moyen", text: "Moyen" },
         { value: "Difficile", text: "Difficile" },
@@ -108,45 +91,33 @@ export default {
 
   async mounted() {
     const categories = await AdminQuiz.getCategories();
-    this.options = categories.data;
+    this.options = [{ text: "Techno/langage : tous", value: "" }].concat(
+      categories.data
+    );
   },
 
   beforeMount() {
+    //this.getAuth();
     this.getAllQuizzes();
   },
 
   updated() {
+    /*     if (this.$store.getters.loggedIn && !this.$store.state.user) {
+      this.getAuth();
+    } */
     //this.getAllQuizzes();
   },
 
   methods: {
+    search_text() {
+      var inside = this;
+      console.log(this.search.text, inside);
+    },
     async getAllQuizzes() {
       Quiz.getPublishedQuizzes().then((result) => {
         this.quizzes = result.data;
       });
     },
-
-    /*     async filter(field) {
-      const payload = {};
-      payload.field = field;
-      if (field === "category") {
-        payload.query = this.selectedLang;
-      } else {
-        payload.query = this.selectedLevel;
-      }
-      Search.filterQuiz({ data: payload }).then(
-        (result) => (this.quizzes = result.data)
-      );
-    }, */
-
-    /*     async search() {
-      console.log("search function")
-      const payload = {};
-      payload.query = this.searchItem;
-      Search.searchQuiz({ data: payload }).then(
-        (result) => (this.quizzes = result.data)
-      );
-    }, */
 
     async searchAll() {
       const payload = {};
@@ -165,19 +136,10 @@ export default {
       });
     },
 
-    /*     async sort() {
-      const payload = {};
-      payload.sort = this.sorting;
-      Search.sortQuiz({ data: payload }).then((result) => {
-        //console.log(result.data);
-        this.quizzes = result.data;
-      });
-    }, */
-
     reset() {
-      this.selectedLang = null;
-      this.selectedLevel = null;
-      this.searchItem = null;
+      this.selectedLang = "";
+      this.selectedLevel = "";
+      this.searchItem = "";
       this.sorting = "desc";
       this.getAllQuizzes();
     },

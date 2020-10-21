@@ -1,6 +1,6 @@
 <template>
   <div class="QuizCard my-2 shadow">
-    <b-card class="h-100" style="max-width: 21rem; min-width: 21rem">
+    <b-card class="h-100" style="max-width: 22rem; min-width: 22rem">
       <b-card-text class="d-flex justify-content-between flex-column">
         <div class="d-flex justify-content-between">
           <router-link
@@ -39,8 +39,6 @@
               size="sm"
               variant="info"
               readonly
-              show-value
-              precision="2"
             ></b-form-rating>
             <small v-else class="text-muted">0 note</small>
           </div>

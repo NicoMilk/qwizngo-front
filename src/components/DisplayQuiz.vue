@@ -10,24 +10,9 @@
         Techno : {{ quiz.category.name }}
       </b-col>
       <b-col md="4" class="d-flex justify-content-end">
-        <b-icon
-          v-if="quiz.difficulty === 'Facile'"
-          icon="reception1"
-          variant="success"
-          class="mr-3 mb-3 h1"
-        ></b-icon>
-        <b-icon
-          v-if="quiz.difficulty === 'Moyen'"
-          icon="reception2"
-          variant="warning"
-          class="mr-3  mb-3 h1"
-        ></b-icon>
-        <b-icon
-          v-if="quiz.difficulty === 'Difficile'"
-          icon="reception3"
-          variant="danger"
-          class="mr-3 mt-1 mb-3 h1"
-        ></b-icon>
+        <div class="h1 mb-0 mr-3" md="1">
+          <DifficultyIcon :difficulty="quiz.difficulty"></DifficultyIcon>
+        </div>
         <div class="pt-3 h5 mb-0 mr-3">
           <b-icon icon="stopwatch" variant="primary"></b-icon
           >{{ quiz.bonus_time }} min
@@ -96,10 +81,13 @@
 </style>
 
 <script>
+import DifficultyIcon from "../components/DifficultyIcon";
 import AdminQuiz from "../apis/AdminQuiz";
 export default {
   props: ["quiz", "questions"],
-
+  components: {
+    DifficultyIcon,
+  },
   data: () => {
     return {};
   },

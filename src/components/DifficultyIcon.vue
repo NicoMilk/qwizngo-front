@@ -11,40 +11,40 @@ export default {
   computed: {
     setVariant() {
       switch (this.$props.difficulty) {
-        case 'Facile':
-          return 'success';
+        case "Facile":
+          return "success";
           break;
-        case 'Moyen':
-          return 'warning';
+        case "Moyen":
+          return "warning";
           break;
-        case 'Difficile':
-          return 'danger';
+        case "Difficile":
+          return "danger";
           break;
-        case 'Hardcore':
-          return 'dark';
+        case "Hardcore":
+          return "dark";
           break;
         default:
-          return 'light';
+          return "light";
           break;
       }
     },
 
     setIcon() {
       switch (this.$props.difficulty) {
-        case 'Facile':
-          return 'reception1';
+        case "Facile":
+          return "reception1";
           break;
-        case 'Moyen':
-          return 'reception2';
+        case "Moyen":
+          return "reception2";
           break;
-        case 'Difficile':
-          return 'reception3';
+        case "Difficile":
+          return "reception3";
           break;
-        case 'Hardcore':
-          return 'reception4';
+        case "Hardcore":
+          return "reception4";
           break;
         default:
-          return 'light';
+          return "light";
           break;
       }
     },

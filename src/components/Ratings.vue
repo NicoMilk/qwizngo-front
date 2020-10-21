@@ -21,7 +21,10 @@
     </div>
     <div v-else class="d-flex justify-content-start align-items-center">
       <div>
-        <h5 class="my-auto">Votre évaluation du quiz</h5>
+        <small class="my-auto"
+          >Votre évaluation du
+          {{ currentRating.date | moment("dddd DD MMMM YYYY") }}</small
+        >
       </div>
 
       <div>
@@ -36,7 +39,6 @@
         >
         </b-form-rating>
       </div>
-      <small>Publiée le {{ postDate }}</small>
     </div>
   </div>
 </template>
@@ -69,7 +71,7 @@ export default {
   },
 
   watch: {
-    rating: function () {
+    rating: function() {
       this.addRating();
     },
   },
@@ -79,7 +81,7 @@ export default {
       Quiz.addRating({
         data: {
           user_id: this.userId,
-          quizz_id: this.$route.params.quiz_id,
+          quizz_id: this.$route.params.quiz_id || this.$props.quizId,
           rating: this.rating,
         },
       }).then((response) => {
@@ -92,7 +94,7 @@ export default {
       Quiz.getUserRating({
         data: {
           user_id: this.userId,
-          quizz_id: this.$route.params.quiz_id,
+          quizz_id: this.$route.params.quiz_id || this.$props.quizId,
         },
       }).then((response) => {
         //console.log(response.data);
@@ -108,5 +110,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

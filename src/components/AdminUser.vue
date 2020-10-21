@@ -6,22 +6,38 @@
       >
     </div>
 
+    <b-col class="mb-4">
+      <b-input-group>
+        <b-form-input
+          @input="filter"
+          v-model="searchedUser"
+          type="text"
+          placeholder="Rechercher un utilisateur"
+        >
+        </b-form-input>
+        <b-input-group-append class="x-button">
+          <!-- <b-button variant="info" @click="reset"><strong>x</strong></b-button> -->
+        </b-input-group-append>
+      </b-input-group>
+      <!-- <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon> -->
+    </b-col>
+
     <div
-      v-for="(user, idx) in users"
-      class="accordion"
+      v-for="(user, idx) in filteredUsers"
+      class="accordion shadow"
       role="tablist"
       :key="idx"
     >
-      <b-card no-body class="mb-0">
+      <b-card no-body class="mb-2">
         <!-- Header collapsable -->
         <b-card-header header-tag="header" role="tab" class="p-0">
           <b-container
             fluid
             v-b-toggle="'accordion-' + idx"
             variant="info"
-            class="p-2 bg-theme d-flex flex-wrap justify-content-between"
+            class="p-2 bg-light d-flex flex-wrap justify-content-between"
           >
-            <b-col md="3">
+            <b-col md="3" class="text-theme">
               <strong>
                 {{ user.name }}
               </strong>
@@ -29,8 +45,8 @@
             <b-col md="3">
               {{ user.email }}
             </b-col>
-            <b-col md="3"> xps : {{ user.score }}</b-col>
-            <b-col md="3">
+            <b-col md="3" class="col-6"> XP {{ user.score }}</b-col>
+            <b-col md="3" class="col-6">
               {{ user.role }}
             </b-col>
           </b-container>
@@ -208,6 +224,8 @@ export default {
   data() {
     return {
       users: [],
+      filteredUsers: [],
+      searchedUser: '',
       currentUser: '',
       form: {
         // id: null,
@@ -224,9 +242,13 @@ export default {
   mounted() {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
-      const x = _.orderBy(response.data, ['name'], ['asc']); //TODO iteratee name -> lowerCase
-      //console.log('LODASH RESPONSE.DATA :', x);
+      const x = _.orderBy(
+        response.data,
+        [(user) => user.name.toLowerCase()],
+        ['asc']
+      );
       this.users = x;
+      this.filteredUsers = x;
     });
   },
 
@@ -330,8 +352,22 @@ export default {
         // }
       }
     },
+
+    async filter() {
+      if (this.searchedUser) {
+        const regex = new RegExp(this.searchedUser, 'i');
+        this.filteredUsers = this.users.filter((user) => {
+          return user.name.match(regex);
+        });
+        // this.filteredUsers = this.users.filter((user) => {
+        //   return user.name.includes(this.searchedUser);
+        // });
+
+        // console.log('XXX: ', this.filteredUsers);
+      } else {
+        this.filteredUsers = this.users;
+      }
+    },
   },
 };
 </script>
-
-<style></style>

@@ -1,11 +1,6 @@
 <template>
   <div>
-    <div
-      class="container px-0 py-4"
-      v-if="
-        this.$store.state.user ? this.$store.state.user.role == 'admin' : false
-      "
-    >
+    <div class="container px-0 py-4">
       <nav class="nav nav-pills flex-column flex-sm-row nav-justified">
         <router-link
           :to="{ path: '/admin' }"
@@ -17,15 +12,10 @@
           class="flex-sm-fill text-center nav-link mx-3"
           >Utilisateurs</router-link
         >
-        <router-link
-          :to="{ name: 'AdminStats' }"
-          class="flex-sm-fill text-center nav-link mx-3"
-          >Statistiques</router-link
-        >
       </nav>
       <router-view></router-view>
     </div>
-    <div v-else class="my-5 text-center"></div>
+    <div class="my-5 text-center"></div>
   </div>
 </template>
 
@@ -38,7 +28,7 @@ export default {
       isAdmin: false,
     };
   },
-  xmounted() {
+  mounted() {
     console.log(this.$store.state);
     this.isAdmin = this.$store.state.user
       ? this.$store.state.user.role == "admin"
