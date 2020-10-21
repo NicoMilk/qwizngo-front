@@ -1,128 +1,130 @@
 <template>
-<div>
-  <b-container>
-    <div class="text-right my-3 d-flex justify-content-around">
-      <h5 class="p-2 text-theme">
-        <strong>{{ user.name }}</strong>
-      </h5>
-      <h5 class="p-2 bg-warning flag  ">
-        {{ user.score }} XP | Position : <strong>{{ rank }}</strong>
-      </h5>
-    </div>
-    <b-row align-v="baseline">
-      <b-col md="6" class="my-1">
-        <b-form-group class="mb-0">
-          <b-input-group size="sm">
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Type to Search"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">x</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col md="6" class="my-1">
-        <b-pagination
-          pills
-          v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          align="fill"
-          size="sm"
-          class="my-0 info"
-        ></b-pagination
-      ></b-col>
-    </b-row>
+  <div>
+    <b-container>
+      <div class="text-right my-3 d-flex justify-content-around">
+        <h5 class="p-2 text-theme">
+          <strong>{{ user.name }}</strong>
+        </h5>
+        <h5 class="p-2 bg-warning flag  ">
+          {{ user.score }} XP | Position : <strong>{{ rank }}</strong>
+        </h5>
+      </div>
+      <b-row align-v="baseline">
+        <b-col md="6" class="my-1">
+          <b-form-group class="mb-0">
+            <b-input-group size="sm">
+              <b-form-input
+                v-model="filter"
+                type="search"
+                id="filterInput"
+                placeholder="Type to Search"
+              ></b-form-input>
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">x</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <b-col md="6" class="my-1">
+          <b-pagination
+            pills
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0 info"
+          ></b-pagination
+        ></b-col>
+      </b-row>
 
-    <b-table
-      show-empty
-      sort-icon-left
-      small
-      stacked="md"
-      :items="quizzes"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      :filter-included-fields="filterOn"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :sort-direction="sortDirection"
-      @filtered="onFiltered"
-    >
-      <template #cell(actions)="row">
-        <b-button
-          pill
-          size="sm"
-          @click="row.toggleDetails"
-          variant="outline-info"
-        >
-          <b-icon v-if="row.detailsShowing" icon="arrow-up" />
-          <b-icon v-else icon="arrow-down" />
-          Réactions
-        </b-button>
-      </template>
+      <b-table
+        show-empty
+        sort-icon-left
+        small
+        stacked="md"
+        :items="quizzes"
+        :fields="fields"
+        :current-page="currentPage"
+        :per-page="perPage"
+        :filter="filter"
+        :filter-included-fields="filterOn"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        :sort-direction="sortDirection"
+        @filtered="onFiltered"
+      >
+        <template #cell(name)="row">
+          <b-link :to="'/quiz/' + row.item.quizz_id.id" class="text-theme "
+            ><strong>{{ row.item.name }}</strong></b-link
+          >
+        </template>
+        <template #cell(actions)="row">
+          <b-button
+            pill
+            size="sm"
+            @click="row.toggleDetails"
+            variant="outline-info"
+          >
+            <b-icon v-if="row.detailsShowing" icon="arrow-up" />
+            <b-icon v-else icon="arrow-down" />
+            Réactions
+          </b-button>
+        </template>
 
-      <template #row-details="row">
-        <div>
-          <div class="bg-theme">
-            <QuizCard :quiz="row.item.quizz_id"></QuizCard>
-          </div>
+        <template #row-details="row">
           <div>
-            <Ratings
-              v-if="$root.$store.state.user"
-              :quizId="row.item.quizz_id._id"
-              :userId="$root.$store.state.user.id"
-            ></Ratings
-            ><Comments :quizId="row.item.quizz_id._id"></Comments>
+            <div class="bg-theme">
+              <QuizCard :quiz="row.item.quizz_id"></QuizCard>
+            </div>
+            <div>
+              <Ratings
+                v-if="$root.$store.state.user"
+                :quizId="row.item.quizz_id._id"
+                :userId="$root.$store.state.user.id"
+              ></Ratings
+              ><Comments :quizId="row.item.quizz_id._id"></Comments>
+            </div>
           </div>
-        </div>
-      </template>
-    </b-table>
-  </b-container>
-
+        </template>
+      </b-table>
+    </b-container>
 
     <b-container>
-    <div>
+      <div>
         <h4>Mes quiz favoris</h4>
-    </div>
+      </div>
 
-
-    <b-table
-      show-empty
-      sort-icon-left
-      small
-      stacked="md"
-      :items="favorites"
-      :fields="favFields"
-      :sort-by.sync="favSortBy"
-      :sort-desc.sync="favSortDesc"
-      :sort-direction="favSortDirection"
-    >
-      <template #cell(actions)="row">
-      
+      <b-table
+        show-empty
+        sort-icon-left
+        small
+        stacked="md"
+        :items="favorites"
+        :fields="favFields"
+        :sort-by.sync="favSortBy"
+        :sort-desc.sync="favSortDesc"
+        :sort-direction="favSortDirection"
+      >
+        <template #cell(actions)="row">
           <div class="text-center">
-            <b-icon icon="heart-fill"
-            variant="danger" 
-            @click="removeFavorite(row.item.id)"
-          />
+            <b-icon
+              icon="heart-fill"
+              variant="danger"
+              @click="removeFavorite(row.item.id)"
+            />
           </div>
-  
-      </template>
+        </template>
 
-      <template #row-details="row">
-        <div>
-          <div class="bg-theme">
-            <QuizCard :quiz="row.item.quizz_id"></QuizCard>
+        <template #row-details="row">
+          <div>
+            <div class="bg-theme">
+              <QuizCard :quiz="row.item.quizz_id"></QuizCard>
+            </div>
           </div>
-        </div>
-      </template>
-    </b-table>
-  </b-container>
+        </template>
+      </b-table>
+    </b-container>
   </div>
 </template>
 
@@ -153,6 +155,12 @@ export default {
         label: "Techno/Langage",
         sortable: true,
         sortDirection: "asc",
+      },
+      {
+        key: "success_rate",
+        label: "%",
+        sortable: true,
+        class: "",
       },
       {
         key: "score",
@@ -195,7 +203,7 @@ export default {
         sortByFormatted: true,
         filterByFormatted: true,
       },
-        { key: "actions", label: "Supprimer favoris" },
+      { key: "actions", label: "Supprimer favoris" },
     ],
     totalRows: 1,
     currentPage: 1,
@@ -208,8 +216,8 @@ export default {
     favSortDesc: true,
     favSortDirection: "desc",
     filter: null,
-    filterOn: ["name", "category", "updated_at", "score"],
-    favorites: []
+    filterOn: ["name", "category", "updated_at", "score", "success_rate"],
+    favorites: [],
   }),
   async mounted() {
     const auth = await User.auth();
@@ -219,10 +227,6 @@ export default {
     const userQuizzes = await UserQuiz.getQuizzes(auth.data.id);
     const categories = userQuizzes.data.categories;
     userQuizzes.data.quizzes.forEach((q) => {
-      q.quizz_id.category = {
-        _id: q.quizz_id.category,
-        name: categories.find((c) => c._id === q.quizz_id.category).name,
-      };
       q.quizz_id.id = q.quizz_id._id;
       q.quizz_id.created_at = q.quizz_id.createdAt;
       q.name = q.quizz_id.name;
@@ -230,14 +234,15 @@ export default {
     });
     this.quizzes = userQuizzes.data.quizzes;
     this.totalRows = userQuizzes.data.quizzes.length;
-    
+
     const favorites = [];
 
-    this.user.favorites.forEach(async(fav) => {
-      const quiz = await Quiz.getQuiz(fav)
-      favorites.push(quiz.data)
-    })
-      this.favorites = favorites;
+    this.user.favorites.forEach(async (fav) => {
+      console.log("fav", fav);
+      const quiz = await Quiz.getQuiz(fav);
+      favorites.push(quiz.data);
+    });
+    this.favorites = favorites;
   },
   computed: {
     sortOptions() {
@@ -261,11 +266,15 @@ export default {
       this.currentPage = 1;
     },
     async removeFavorite(favId) {
-      this.user.favorites = this.user.favorites.filter(fav => fav !== favId);
-      this.favorites = this.favorites.filter(quiz => quiz.id !== favId);
-      const remFav = await User.saveFavorites(this.user.id, this.user.favorites)
-      console.log(this.user.favorites)
-    }
+      this.user.favorites = this.user.favorites.filter((fav) => fav !== favId);
+      this.favorites = this.favorites.filter((quiz) => quiz.id !== favId);
+      const remFav = await User.saveFavorites(
+        this.user.id,
+        this.user.favorites
+        //this.$store.commit("setUser", this.user)
+      );
+      console.log(this.user.favorites);
+    },
   },
 };
 </script>

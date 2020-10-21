@@ -12,11 +12,6 @@
           class="flex-sm-fill text-center nav-link mx-3"
           >Utilisateurs</router-link
         >
-        <router-link
-          :to="{ name: 'AdminStats' }"
-          class="flex-sm-fill text-center nav-link mx-3"
-          >Statistiques</router-link
-        >
       </nav>
       <router-view></router-view>
     </div>
