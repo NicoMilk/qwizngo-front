@@ -6,8 +6,24 @@
       >
     </div>
 
+    <b-col class="mb-4">
+      <b-input-group>
+        <b-form-input
+          @input="filter"
+          v-model="searchedUser"
+          type="text"
+          placeholder="Rechercher un utilisateur"
+        >
+        </b-form-input>
+        <b-input-group-append class="x-button">
+          <!-- <b-button variant="info" @click="reset"><strong>x</strong></b-button> -->
+        </b-input-group-append>
+      </b-input-group>
+      <!-- <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon> -->
+    </b-col>
+
     <div
-      v-for="(user, idx) in users"
+      v-for="(user, idx) in filteredUsers"
       class="accordion shadow"
       role="tablist"
       :key="idx"
@@ -199,34 +215,40 @@
 </template>
 
 <script>
-import AdminUser from "../apis/AdminUser.js";
-import User from "../apis/User.js";
-import VueLodash from "vue-lodash";
-import lodash from "lodash";
+import AdminUser from '../apis/AdminUser.js';
+import User from '../apis/User.js';
+import VueLodash from 'vue-lodash';
+import lodash from 'lodash';
 
 export default {
   data() {
     return {
       users: [],
-      currentUser: "",
+      filteredUsers: [],
+      searchedUser: '',
+      currentUser: '',
       form: {
         // id: null,
-        name: "",
-        email: "",
-        password: "",
-        pwdConfirm: "",
-        role: "user",
+        name: '',
+        email: '',
+        password: '',
+        pwdConfirm: '',
+        role: 'user',
       },
-      roles: ["user", "admin"],
+      roles: ['user', 'admin'],
     };
   },
 
   mounted() {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
-      const x = _.orderBy(response.data, ["name"], ["asc"]); //TODO iteratee name -> lowerCase
-      //console.log('LODASH RESPONSE.DATA :', x);
+      const x = _.orderBy(
+        response.data,
+        [(user) => user.name.toLowerCase()],
+        ['asc']
+      );
       this.users = x;
+      this.filteredUsers = x;
     });
   },
 
@@ -240,11 +262,11 @@ export default {
     resetNewUserForm(evt) {
       evt.preventDefault();
       // Reset our form values
-      this.form.name = "";
-      this.form.email = "";
-      this.form.password = "";
-      this.form.pwdConfirm = "";
-      this.form.role = "user";
+      this.form.name = '';
+      this.form.email = '';
+      this.form.password = '';
+      this.form.pwdConfirm = '';
+      this.form.role = 'user';
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
@@ -310,7 +332,7 @@ export default {
         console.log(this.users[idx]);
         const updUser = await AdminUser.updateUser(this.users[idx]);
       } catch (err) {
-        console.error("Error from updUser :", error);
+        console.error('Error from updUser :', error);
       }
     },
 
@@ -326,12 +348,26 @@ export default {
         );
         await this.users.splice(deletedUserIndex, 1);
       } catch (error) {
-        console.error("Error from deleteUser :", error);
+        console.error('Error from deleteUser :', error);
         // }
+      }
+    },
+
+    async filter() {
+      if (this.searchedUser) {
+        const regex = new RegExp(this.searchedUser, 'i');
+        this.filteredUsers = this.users.filter((user) => {
+          return user.name.match(regex);
+        });
+        // this.filteredUsers = this.users.filter((user) => {
+        //   return user.name.includes(this.searchedUser);
+        // });
+
+        // console.log('XXX: ', this.filteredUsers);
+      } else {
+        this.filteredUsers = this.users;
       }
     },
   },
 };
 </script>
-
-<style></style>
