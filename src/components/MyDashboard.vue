@@ -237,7 +237,7 @@ export default {
 
     const favorites = [];
 
-    this.user.favorites.forEach(async (fav) => {
+    this.$store.state.user.favorites.forEach(async (fav) => {
       console.log("fav", fav);
       const quiz = await Quiz.getQuiz(fav);
       favorites.push(quiz.data);
@@ -266,11 +266,13 @@ export default {
       this.currentPage = 1;
     },
     async removeFavorite(favId) {
-      this.user.favorites = this.user.favorites.filter((fav) => fav !== favId);
+      this.$store.state.user.favorites = this.$store.state.user.favorites.filter(
+        (fav) => fav !== favId
+      );
       this.favorites = this.favorites.filter((quiz) => quiz.id !== favId);
       const remFav = await User.saveFavorites(
         this.user.id,
-        this.user.favorites
+        this.$store.state.user.favorites
         //this.$store.commit("setUser", this.user)
       );
       console.log(this.user.favorites);
