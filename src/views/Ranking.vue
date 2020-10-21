@@ -3,30 +3,6 @@
     <b-col class="sticky-top ">
       <h1 class="bg-light my-4">CLASSEMENT :</h1>
     </b-col>
-
-    <!-- CURRENT USER CARD -->
-    <!-- TODO REMOVE IF NOT USED -->
-    <!-- <b-card
-        style="max-width: 30rem;"
-        class="mb-4 text-center pointer"
-        :title="currentUser.name"
-        v-scroll-to="{
-          el: '#x' + currentUser.id,
-          offset: -500,
-          easing: 'ease-in-out',
-        }"
-      >
-        <b-card-text>
-          <h4>Place : {{ currentUserRank }}</h4>
-        </b-card-text>
-        <b-card-text>
-          <h4>Score : {{ currentUser.score }} XPs</h4>
-        </b-card-text>
-      </b-card> -->
-
-    <!-- <div id="top"></div> -->
-
-    <!-- RANKING CARDS -->
     <div v-for="(user, idx) in users" :key="idx">
       <b-card
         :class="
@@ -69,14 +45,6 @@
                 style="color: brown"
               ></b-icon>
             </b-col>
-            <!-- <b-col md="1">
-              <b-icon
-                v-if="showBackToTop === user.id"
-                class="pointer"
-                icon="chevron-double-up"
-                v-scroll-to="'#top'"
-              ></b-icon>
-            </b-col> -->
           </b-row>
         </b-card-text>
       </b-card>
@@ -88,6 +56,7 @@
       v-scroll-to="'#top'"
     ></b-icon>
     <b-icon
+      v-if="Object.keys(currentUser).length != 0"
       icon="person-circle"
       class="scrollToUserRank pointer"
       font-scale="3"
@@ -97,8 +66,6 @@
         easing: 'ease-in-out',
       }"
     ></b-icon>
-
-    <!-- <b-button class="scrollToTop">BTT</b-button> -->
   </b-container>
 </template>
 
@@ -112,41 +79,29 @@ export default {
       users: [],
       usersRanks: [],
       currentUser: {},
-      // currentUserRank: null,
-      showBackToTop: null,
     };
   },
 
   async mounted() {
-    // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     const users = await AdminUser.getUsers();
     const sortedUsers = _.orderBy(users.data, ['score'], ['desc']);
     this.users = sortedUsers;
-    // console.log('USERS :', this.users);
 
-    const currentUser = await User.auth();
-    this.currentUser = currentUser.data;
-    // console.log('CURRENT USER :', this.currentUser);
-
-    // const plop = await this.users
-    //   .map((user) => user.id)
-    //   .indexOf(this.currentUser.id);
-    // this.currentUserRank = plop + 1;
-    // console.log('CURRENT USER RANK:', this.currentUserRank);
-
-    // autoScroll options :
-    var options = {
-      // container: '#container',
-      easing: 'ease-in-out',
-      offset: -400,
-      force: true,
-      cancelable: true,
-      x: false,
-      y: true,
-    };
-
-    var autoScroll = this.$scrollTo('#x' + this.currentUser.id, options);
-    // console.log('AUTOSCROLL :', autoScroll);
+    if (this.$store.getters.loggedIn) {
+      const currentUser = await User.auth();
+      this.currentUser = currentUser.data;
+      var autoScroll = this.$scrollTo('#x' + this.currentUser.id, {
+        // container: '#container',
+        easing: 'ease-in-out',
+        offset: -400,
+        force: true,
+        cancelable: true,
+        x: false,
+        y: true,
+      });
+    } else {
+      this.currentUser = {};
+    }
   },
 };
 </script>
