@@ -10,7 +10,6 @@ export default {
 
   computed: {
     setVariant() {
-      console.log(this.$props.difficulty);
       switch (this.$props.difficulty) {
         case "Facile":
           return "success";

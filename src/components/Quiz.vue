@@ -176,7 +176,13 @@
       </b-overlay>
     </b-collapse>
 
-    <b-card no-body v-if="correcting" class="mt-2">
+    <b-card
+      no-body
+      v-if="
+        correcting || (this.$store.state.user && this.$store.getters.isAdmin)
+      "
+      class="mt-2"
+    >
       <b-card-header class="text-center p-0 bg-info text-light pt-2">
         <h4>Réactions</h4>
       </b-card-header>
@@ -342,7 +348,7 @@ export default {
       });
     },
 
-    classQuestion: function(idx) {
+    classQuestion: function (idx) {
       return {
         "text-danger":
           this.correcting && !this.results.results[idx].is_good_answer,
@@ -351,7 +357,7 @@ export default {
       };
     },
 
-    classAnswer: function(q_index, a_index) {
+    classAnswer: function (q_index, a_index) {
       const user_answser = this.correcting
         ? this.results.results[q_index].user_answers.find(
             (a) => a == a_index
@@ -369,7 +375,7 @@ export default {
     },
   },
   computed: {
-    classBonus: function() {
+    classBonus: function () {
       return {
         "text-danger":
           this.correcting &&
@@ -380,7 +386,7 @@ export default {
           parseInt(this.results.success_rate) > 75,
       };
     },
-    classTimer: function() {
+    classTimer: function () {
       return {
         "text-danger": this.running && this.timeout,
         "text-success": !this.timeout && this.running,
@@ -391,7 +397,7 @@ export default {
           this.chrono.getSeconds() <= 15,
       };
     },
-    classSubmit: function(idx) {
+    classSubmit: function (idx) {
       return {
         "text-warning": this.running && this.questionCount !== this.answerCount,
       };
