@@ -1,4 +1,5 @@
 <template>
+<div>
   <b-container>
     <div class="text-right my-3 d-flex justify-content-around">
       <h5 class="p-2 text-theme">
@@ -83,10 +84,51 @@
       </template>
     </b-table>
   </b-container>
+
+
+    <b-container>
+    <div>
+        <h4>Mes quiz favoris</h4>
+    </div>
+
+
+    <b-table
+      show-empty
+      sort-icon-left
+      small
+      stacked="md"
+      :items="favorites"
+      :fields="favFields"
+      :sort-by.sync="favSortBy"
+      :sort-desc.sync="favSortDesc"
+      :sort-direction="favSortDirection"
+    >
+      <template #cell(actions)="row">
+      
+          <div class="text-center">
+            <b-icon icon="heart-fill"
+            variant="danger" 
+            @click="removeFavorite(row.item.id)"
+          />
+          </div>
+  
+      </template>
+
+      <template #row-details="row">
+        <div>
+          <div class="bg-theme">
+            <QuizCard :quiz="row.item.quizz_id"></QuizCard>
+          </div>
+        </div>
+      </template>
+    </b-table>
+  </b-container>
+  </div>
 </template>
 
 <script>
 import User from "../apis/User";
+import Quiz from "../apis/Quiz";
 import UserQuiz from "../apis/UserQuiz";
 import moment from "moment";
 import Comments from "./Comments";
@@ -130,6 +172,31 @@ export default {
       },
       { key: "actions", label: "Voir plus..." },
     ],
+    favFields: [
+      {
+        key: "name",
+        label: "Nom",
+        sortable: true,
+        sortDirection: "asc",
+      },
+      {
+        key: "category.name",
+        label: "Techno/Langage",
+        sortable: true,
+        sortDirection: "asc",
+      },
+      {
+        key: "created_at",
+        label: "Mise en ligne",
+        formatter: (value, key, item) => {
+          return moment(value).format("DD MMM YYYY");
+        },
+        sortable: true,
+        sortByFormatted: true,
+        filterByFormatted: true,
+      },
+        { key: "actions", label: "Supprimer favoris" },
+    ],
     totalRows: 1,
     currentPage: 1,
     perPage: 5,
@@ -137,8 +204,12 @@ export default {
     sortBy: "score",
     sortDesc: true,
     sortDirection: "desc",
+    favSortBy: "score",
+    favSortDesc: true,
+    favSortDirection: "desc",
     filter: null,
     filterOn: ["name", "category", "updated_at", "score"],
+    favorites: []
   }),
   async mounted() {
     const auth = await User.auth();
@@ -159,7 +230,14 @@ export default {
     });
     this.quizzes = userQuizzes.data.quizzes;
     this.totalRows = userQuizzes.data.quizzes.length;
-    console.log(userQuizzes.data.quizzes);
+    
+    const favorites = [];
+
+    this.user.favorites.forEach(async(fav) => {
+      const quiz = await Quiz.getQuiz(fav)
+      favorites.push(quiz.data)
+    })
+      this.favorites = favorites;
   },
   computed: {
     sortOptions() {
@@ -182,6 +260,12 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    async removeFavorite(favId) {
+      this.user.favorites = this.user.favorites.filter(fav => fav !== favId);
+      this.favorites = this.favorites.filter(quiz => quiz.id !== favId);
+      const remFav = await User.saveFavorites(this.user.id, this.user.favorites)
+      console.log(this.user.favorites)
+    }
   },
 };
 </script>
