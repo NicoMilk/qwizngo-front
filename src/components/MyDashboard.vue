@@ -53,6 +53,11 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
+      <template #cell(name)="row">
+        <b-link :to="'/quiz/' + row.item.quizz_id.id" class="text-theme "
+          ><strong>{{ row.item.name }}</strong></b-link
+        >
+      </template>
       <template #cell(actions)="row">
         <b-button
           pill
@@ -113,6 +118,12 @@ export default {
         sortDirection: "asc",
       },
       {
+        key: "success_rate",
+        label: "%",
+        sortable: true,
+        class: "",
+      },
+      {
         key: "score",
         label: "XP",
         sortable: true,
@@ -138,7 +149,7 @@ export default {
     sortDesc: true,
     sortDirection: "desc",
     filter: null,
-    filterOn: ["name", "category", "updated_at", "score"],
+    filterOn: ["name", "category", "updated_at", "score", "success_rate"],
   }),
   async mounted() {
     const auth = await User.auth();

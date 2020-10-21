@@ -30,7 +30,7 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
-    meta: { requireNew: true }
+    meta: { requireNew: true },
   },
   {
     path: "/quiz/:quiz_id",
@@ -41,19 +41,19 @@ const routes = [
     path: "/newquiz",
     name: "NewQuiz",
     component: EditQuiz,
-    meta: { requireAdmin: true }
+    meta: { requireAdmin: true },
   },
   {
     path: "/editquiz/:quiz_id",
     name: "EditQuiz",
     component: EditQuiz,
-    meta: { requireAdmin: true }
+    meta: { requireAdmin: true },
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
-    meta: { requireNew: true }
+    meta: { requireNew: true },
   },
   {
     path: "/admin",
@@ -62,20 +62,15 @@ const routes = [
       {
         name: "Admin",
         path: "",
-        component: AdminQuiz,
+        component: AdminStats,
       },
       {
         name: "AdminUser",
         path: "user",
         component: AdminUser,
       },
-      {
-        name: "AdminStats",
-        path: "stats",
-        component: AdminStats,
-      },
     ],
-    meta: { requireAdmin: true }
+    meta: { requireAdmin: true },
   },
   {
     path: "/dashboard",
@@ -84,21 +79,21 @@ const routes = [
       {
         name: "Dashboard",
         path: "",
-        component: MyDashboard
+        component: MyDashboard,
       },
       {
         name: "Profile",
         path: "profile",
-        component: MyAccount
-      }
+        component: MyAccount,
+      },
     ],
-    meta: { requireAuth: true }
+    meta: { requireAuth: true },
   },
   {
     path: "/ranking",
     name: "Ranking",
-    component: Ranking
-  }
+    component: Ranking,
+  },
 ];
 
 const router = new VueRouter({

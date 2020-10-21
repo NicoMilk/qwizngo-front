@@ -5,13 +5,13 @@
     <b-navbar toggleable="lg" type="dark" variant="info" class="container">
       <b-navbar-brand href="#">
         <router-link class="navbar-brand" :to="{ path: '/' }">
-          <img src="/qg_logo_short.png" alt="Qwiz&amp;Go" />
+          <h3 class="mb-0">Qwiz&amp;Go</h3>
         </router-link>
       </b-navbar-brand>
       <b-navbar-nav>
-        <b-nav-item href="#">
+        <b-nav-item>
           <router-link
-            class="text-decoration-none text-light"
+            class="text-decoration-none text-light mx-auto"
             :to="{ name: 'Ranking' }"
           >
             Classement
@@ -173,10 +173,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.router-link-exact-active {
-  color: #ffffff !important;
-  transition: all 0.25s;
-}
-</style>

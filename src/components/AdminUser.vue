@@ -21,16 +21,16 @@
             variant="info"
             class="p-2 bg-light d-flex flex-wrap justify-content-between"
           >
-            <b-col md="3" xs="6">
+            <b-col md="3" class="text-theme">
               <strong>
                 {{ user.name }}
               </strong>
             </b-col>
-            <b-col md="3" xs="6">
+            <b-col md="3">
               {{ user.email }}
             </b-col>
-            <b-col md="3" xs="6"> xps : {{ user.score }}</b-col>
-            <b-col md="3" xs="6">
+            <b-col md="3" class="col-6"> XP {{ user.score }}</b-col>
+            <b-col md="3" class="col-6">
               {{ user.role }}
             </b-col>
           </b-container>
