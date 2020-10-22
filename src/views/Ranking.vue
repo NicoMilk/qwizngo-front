@@ -1,8 +1,10 @@
 <template>
-  <b-container id="top" class="py-3 text-center">
-    <b-col class="sticky-top ">
-      <h1 class="bg-light my-4">CLASSEMENT :</h1>
-    </b-col>
+  <b-container id="top" class="py-3 text-center h100">
+    <div class="sticky-top flag bg-light ">
+      <h2 class="bg-warning my-4 py-2">CLASSEMENT</h2>
+    </div>
+
+    <!-- RANKING CARDS -->
     <div v-for="(user, idx) in users" :key="idx">
       <b-card
         :class="
@@ -15,17 +17,8 @@
         :id="'x' + user.id"
       >
         <b-card-text>
-          <b-row>
-            <b-col md="2">
-              <h5>{{ idx + 1 }}</h5>
-            </b-col>
-            <b-col md="4">
-              <h5 class="text-left pl-5">{{ user.name }}</h5>
-            </b-col>
-            <b-col md="4">
-              <h5>{{ user.score }} XPs</h5>
-            </b-col>
-            <b-col md="1">
+          <b-row align-v="center">
+            <b-col md="4" class="col-12">
               <b-icon
                 v-if="idx + 1 === 1"
                 icon="award-fill"
@@ -44,6 +37,15 @@
                 font-scale="2"
                 style="color: brown"
               ></b-icon>
+              <h4 class="align-self-center my-2 text-theme">
+                position <strong>{{ idx + 1 }}</strong>
+              </h4>
+            </b-col>
+            <b-col md="4" class="col-6">
+              <h5 class="text-center">{{ user.name }}</h5>
+            </b-col>
+            <b-col md="4" class="col-6">
+              <h5>{{ user.score }} XP</h5>
             </b-col>
           </b-row>
         </b-card-text>
@@ -70,8 +72,8 @@
 </template>
 
 <script>
-import AdminUser from '../apis/AdminUser.js';
-import User from '../apis/User';
+import AdminUser from "../apis/AdminUser.js";
+import User from "../apis/User";
 
 export default {
   data() {
@@ -84,15 +86,15 @@ export default {
 
   async mounted() {
     const users = await AdminUser.getUsers();
-    const sortedUsers = _.orderBy(users.data, ['score'], ['desc']);
+    const sortedUsers = _.orderBy(users.data, ["score"], ["desc"]);
     this.users = sortedUsers;
 
     if (this.$store.getters.loggedIn) {
       const currentUser = await User.auth();
       this.currentUser = currentUser.data;
-      var autoScroll = this.$scrollTo('#x' + this.currentUser.id, {
+      var autoScroll = this.$scrollTo("#x" + this.currentUser.id, {
         // container: '#container',
-        easing: 'ease-in-out',
+        easing: "ease-in-out",
         offset: -400,
         force: true,
         cancelable: true,

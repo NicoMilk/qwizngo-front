@@ -24,7 +24,8 @@
 .search-icon {
   position: absolute;
   top: 8px;
-  left: 20px;
+  left: 5px;
+  z-index: 500;
 }
 
 .search-parent {
@@ -94,6 +95,21 @@ th,
 html,
 body {
   background-color: #f8f9fa !important;
+  height: 100% !important;
+}
+.wrapper {
+  min-height: 100%;
+
+  /* Equal to height of footer */
+  /* But also accounting for potential margin-bottom of last child */
+  margin-bottom: -50px;
+}
+.footer,
+.push {
+  height: 50px;
+}
+.h100 {
+  min-height: calc(100vh - 180px) !important;
 }
 
 .x-button {
@@ -118,4 +134,13 @@ body {
   bottom: 60px;
   color: orange;
   opacity: 25%;
+}
+
+.card-inline {
+  width: 21rem !important;
+}
+
+.nav-footer {
+  margin-top: 50px !important;
+  color: whitesmoke;
 }

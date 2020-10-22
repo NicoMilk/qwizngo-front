@@ -9,6 +9,9 @@
           {{ user.score }} XP | Position : <strong>{{ rank }}</strong>
         </h5>
       </div>
+      <div>
+        <h4>Mes scores</h4>
+      </div>
       <b-row align-v="baseline">
         <b-col md="6" class="my-1">
           <b-form-group class="mb-0">
@@ -17,7 +20,7 @@
                 v-model="filter"
                 type="search"
                 id="filterInput"
-                placeholder="Type to Search"
+                placeholder="Entrez un mom, une techno, ..."
               ></b-form-input>
               <b-input-group-append>
                 <b-button :disabled="!filter" @click="filter = ''">x</b-button>
@@ -74,7 +77,7 @@
 
         <template #row-details="row">
           <div>
-            <div class="bg-theme">
+            <div class="bg-theme card-inline">
               <QuizCard :quiz="row.item.quizz_id"></QuizCard>
             </div>
             <div>
@@ -92,6 +95,13 @@
     </b-container>
 
     <!-- *************** Suggestion Quiz *************-->
+
+    <b-container class="my-5">
+      <div>
+        <h4>Suggestion pour monter en niveau</h4>
+        <QuizCard :quiz="suggestQuiz" class="bg-theme card-inline" />
+      </div>
+    </b-container>
 
     <!-- ************** fin Suggestion Quiz ***********-->
 
@@ -111,21 +121,20 @@
         :sort-desc.sync="favSortDesc"
         :sort-direction="favSortDirection"
       >
+        <template #cell(name)="row">
+          <b-link :to="'/quiz/' + row.item.id" class="text-theme "
+            ><strong>{{ row.item.name }}</strong></b-link
+          >
+        </template>
+
         <template #cell(actions)="row">
           <div class="text-center">
             <b-icon
+              class="pointer"
               icon="heart-fill"
               variant="danger"
               @click="removeFavorite(row.item.id)"
             />
-          </div>
-        </template>
-
-        <template #row-details="row">
-          <div>
-            <div class="bg-theme">
-              <QuizCard :quiz="row.item.quizz_id"></QuizCard>
-            </div>
           </div>
         </template>
       </b-table>
@@ -208,7 +217,7 @@ export default {
         sortByFormatted: true,
         filterByFormatted: true,
       },
-      { key: "actions", label: "Supprimer favoris" },
+      { key: "actions", class: "text-center", label: "Supprimer favoris" },
     ],
     totalRows: 1,
     currentPage: 1,
@@ -244,7 +253,6 @@ export default {
     const favorites = [];
 
     this.$store.state.user.favorites.forEach(async (fav) => {
-      console.log("fav", fav);
       const quiz = await Quiz.getQuiz(fav);
       favorites.push(quiz.data);
     });
@@ -264,10 +272,6 @@ export default {
   },
 
   methods: {
-    resetInfoModal() {
-      this.infoModal.title = "";
-      this.infoModal.content = "";
-    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
@@ -281,9 +285,9 @@ export default {
       const remFav = await User.saveFavorites(
         this.user.id,
         this.$store.state.user.favorites
-        //this.$store.commit("setUser", this.user)
       );
-      console.log(this.user.favorites);
+      //this.$store.commit("setUser", this.user)
+      //console.log(this.user.favorites);
     },
   },
 };

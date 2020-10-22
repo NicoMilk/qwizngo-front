@@ -1,8 +1,8 @@
 <template>
-  <div class="home container mt-0">
-    <div class="mb-3 search-parent p-2 d-flex justify-content-between">
-      <b-row class="search-bar flex-fill">
-        <b-col md="5">
+  <div class="home container mt-0 h100">
+    <div class="mb-3 search-parent p-2">
+      <b-row class="search-bar flex-fill" no-gutters>
+        <b-col md="5" class="col-12">
           <b-input-group size="md"
             ><b-form-input
               @keypress.enter="searchAll"
@@ -18,7 +18,7 @@
           >
           <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon>
         </b-col>
-        <b-col md="3">
+        <b-col md="3" class="col-4">
           <b-form-select
             @change="searchAll"
             v-model="selectedLang"
@@ -26,7 +26,7 @@
             size="md"
           />
         </b-col>
-        <b-col md="2">
+        <b-col md="2" class="col-4">
           <div>
             <b-form-select
               @change="searchAll"
@@ -36,7 +36,7 @@
             />
           </div>
         </b-col>
-        <b-col md="2">
+        <b-col md="2" class="col-4">
           <b-form-select
             @change="searchAll"
             v-model="sorting"
