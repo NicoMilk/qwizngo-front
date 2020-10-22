@@ -1,7 +1,7 @@
 <template>
   <div class="QuizCard my-2 shadow">
     <b-card class="h-100" style="max-width: 21rem; min-width: 21rem">
-      <b-card-text class="d-flex justify-content-between flex-column">
+      <b-card-text class="h-100 d-flex justify-content-between flex-column">
         <div class="d-flex justify-content-between">
           <router-link
             :to="'/quiz/' + quiz.id"
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="d-flex align-items-center justify-content-between">
-          <h6 class="mb-0">{{ quiz.category.name }}</h6>
+          <h6 class="mb-0">{{ quiz.category ? quiz.category.name : "" }}</h6>
           <div class="mw-75">
             <b-form-rating
               v-if="quiz.avg_rating > 0"

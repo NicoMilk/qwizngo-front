@@ -6,6 +6,9 @@ export default {
   addCategory(payload) {
     return Api().post("/category/", payload.data);
   },
+  deleteCategory(categoryId) {
+    return Api().delete("/category/" + categoryId);
+  },
   getQuizzes() {
     return Api().get("/quizz");
   },

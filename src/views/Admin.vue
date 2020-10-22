@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h100">
     <div class="container px-0 py-4">
       <nav class="nav nav-pills flex-column flex-sm-row nav-justified">
         <router-link
@@ -29,7 +29,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$store.state);
     this.isAdmin = this.$store.state.user
       ? this.$store.state.user.role == "admin"
       : false;

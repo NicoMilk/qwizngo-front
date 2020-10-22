@@ -26,5 +26,8 @@ export default {
   },
   getUserRating(payload) {
     return Api().post('/ratings/one', payload.data)
+  },
+  getSuggestion(userId) {
+    return Api().get('/quizz/suggest/' + userId)
   }
 };
