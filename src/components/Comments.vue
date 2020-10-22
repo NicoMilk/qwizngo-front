@@ -14,9 +14,7 @@
     </div>
 
     <div v-else class="text-center">
-      <b-link to="/login"
-        >Connectez-vous pour noter et ajouter des commentaires</b-link
-      >
+      Vous devez être connecté pour ajouter un avis
     </div>
     <b-card v-for="comment in comments" :key="comment.id" class="my-2">
       <div class="d-flex justify-content-between">
@@ -34,7 +32,7 @@
           v-if="
             ($store.state.user &&
               $store.state.user.email == comment.user_id.email) ||
-              isAdmin
+            isAdmin
           "
         >
           <b-icon

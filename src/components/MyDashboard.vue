@@ -5,7 +5,7 @@
         <h5 class="p-2 text-theme">
           <strong>{{ user.name }}</strong>
         </h5>
-        <h5 class="p-2 bg-warning flag  ">
+        <h5 class="p-2 bg-warning flag">
           {{ user.score }} XP | Position : <strong>{{ rank }}</strong>
         </h5>
       </div>
@@ -37,7 +37,7 @@
           ></b-pagination
         ></b-col>
       </b-row>
-
+      <!-- *****  Liste des quiz déjà fait ***********-->
       <b-table
         show-empty
         sort-icon-left
@@ -55,7 +55,7 @@
         @filtered="onFiltered"
       >
         <template #cell(name)="row">
-          <b-link :to="'/quiz/' + row.item.quizz_id.id" class="text-theme "
+          <b-link :to="'/quiz/' + row.item.quizz_id.id" class="text-theme"
             ><strong>{{ row.item.name }}</strong></b-link
           >
         </template>
@@ -88,7 +88,18 @@
           </div>
         </template>
       </b-table>
+      <!-- ********* fin des quiz des faits ************-->
     </b-container>
+
+    <!-- *************** Suggestion Quiz *************-->
+    <b-container>
+      <div v-if="suggestQuiz">
+        <h4>Quiz suggéré selon votre activité</h4>
+        <QuizCard :quiz="suggestQuiz"></QuizCard>
+      </div>
+      <div v-else>Relancez les quizz afin d'améliorer votre score !</div>
+    </b-container>
+    <!-- ************** fin Suggestion Quiz ***********-->
 
     <b-container>
       <div>
@@ -218,6 +229,7 @@ export default {
     filter: null,
     filterOn: ["name", "category", "updated_at", "score", "success_rate"],
     favorites: [],
+    suggestQuiz: {},
   }),
   async mounted() {
     const auth = await User.auth();
@@ -243,6 +255,8 @@ export default {
       favorites.push(quiz.data);
     });
     this.favorites = favorites;
+    const suggest = await Quiz.getSuggestion(auth.data.id);
+    this.suggestQuiz = suggest.data;
   },
   computed: {
     sortOptions() {
