@@ -5,17 +5,17 @@
         <h3>
           {{
             preview
-              ? "Visualiser Quiz"
+              ? 'Visualiser Quiz'
               : editing
-              ? "Modifier Quiz"
-              : "Nouveau Quiz"
+              ? 'Modifier Quiz'
+              : 'Nouveau Quiz'
           }}
         </h3>
         <b-button
           variant="primary"
           class="mx-2"
           @click.prevent="preview = !preview"
-          >{{ preview ? "Editer" : "Visualiser" }}</b-button
+          >{{ preview ? 'Editer' : 'Visualiser' }}</b-button
         >
       </div>
       <DisplayQuiz v-if="preview" :quiz="form" :questions="questions" />
@@ -136,7 +136,8 @@
                   icon="trash"
                   variant="danger"
                   class="h4   m-0"
-                  @click.prevent="deleteQuestion(q_index)"
+                  v-b-modal.modalDeleteQuestion
+                  @click.prevent="setCurrentQuestion(question)"
                 ></b-icon>
               </b-container>
             </b-card-header>
@@ -193,7 +194,10 @@
                       icon="trash"
                       variant="danger"
                       class="h4 pt-1 m-0 pointer"
-                      @click.prevent="deleteAnswer(q_index, a_index)"
+                      v-b-modal.modalDeleteAnswer
+                      @click.prevent="
+                        setCurrentAnswer(question, q_index, a_index)
+                      "
                     ></b-icon>
                   </div>
                 </b-form-group>
@@ -210,21 +214,78 @@
             type="button"
             variant="danger"
             class="mt-2 mx-2"
-            @click="deleteQuiz"
+            v-b-modal.modalDeleteQuiz
             >Supprimer</b-button
           >
           <b-button type="submit" variant="primary" class="mt-2 mx-2">{{
-            editing ? "Enregistrer" : "Créer"
+            editing ? 'Enregistrer' : 'Créer'
           }}</b-button>
         </b-container>
       </b-form>
     </b-overlay>
+
+    <!-- DELETE QUESTION MODAL -->
+    <b-modal id="modalDeleteQuestion" centered hide-header hide-footer>
+      <div class="d-block text-center">
+        <p class="my-4">
+          Supprimer la question "{{ currentQuestion.question }}" ?
+        </p>
+      </div>
+      <b-container fluid class="p-2 d-flex justify-content-around">
+        <b-button
+          variant="success"
+          @click="$bvModal.hide('modalDeleteQuestion')"
+          >Annuler</b-button
+        >
+        <b-button
+          variant="danger"
+          @click="deleteQuestion(), $bvModal.hide('modalDeleteQuestion')"
+          >Confirmer</b-button
+        >
+      </b-container>
+    </b-modal>
+
+    <!-- DELETE ANSWER MODAL -->
+    <b-modal id="modalDeleteAnswer" centered hide-header hide-footer>
+      <div class="d-block text-center">
+        <p class="my-4">Supprimer la réponse "{{ currentAnswer }}" ?</p>
+      </div>
+      <b-container fluid class="p-2 d-flex justify-content-around">
+        <b-button variant="success" @click="$bvModal.hide('modalDeleteAnswer')"
+          >Annuler</b-button
+        >
+        <b-button
+          variant="danger"
+          @click="deleteAnswer(), $bvModal.hide('modalDeleteAnswer')"
+          >Confirmer</b-button
+        >
+      </b-container>
+    </b-modal>
+
+    <!-- DELETE QUIZ MODAL -->
+    <b-modal id="modalDeleteQuiz" centered hide-header hide-footer>
+      <div class="d-block text-center">
+        <p class="my-4">
+          Supprimer le quiz "{{ form.category.name }} - {{ form.name }}" ?
+        </p>
+      </div>
+      <b-container fluid class="p-2 d-flex justify-content-around">
+        <b-button variant="success" @click="$bvModal.hide('modalDeleteQuiz')"
+          >Annuler</b-button
+        >
+        <b-button
+          variant="danger"
+          @click="deleteQuiz(), $bvModal.hide('modalDeleteQuiz')"
+          >Confirmer</b-button
+        >
+      </b-container>
+    </b-modal>
   </b-container>
 </template>
 
 <script>
-import AdminQuiz from "../apis/AdminQuiz";
-import DisplayQuiz from "./DisplayQuiz";
+import AdminQuiz from '../apis/AdminQuiz';
+import DisplayQuiz from './DisplayQuiz';
 export default {
   components: {
     DisplayQuiz,
@@ -245,7 +306,12 @@ export default {
       },
       questions: [],
       categories: [],
-      difficulties: ["Facile", "Moyen", "Difficile"],
+      difficulties: ['Facile', 'Moyen', 'Difficile'],
+      currentQuestion: '',
+      currentQuestionIndex: null,
+      currentAnswer: '',
+      currentAnswerIndex: null,
+      // currentQuiz: '',
     };
   },
   async mounted() {
@@ -253,8 +319,8 @@ export default {
     try {
       const categories = await AdminQuiz.getCategories();
       this.categories = [
-        { text: "Selectionnez...", value: null },
-        { text: "+ Ajouter une valeur...", value: 0 },
+        { text: 'Selectionnez...', value: null },
+        { text: '+ Ajouter une valeur...', value: 0 },
       ].concat(categories.data);
       const quizId = this.$route.params.quiz_id;
       if (quizId) {
@@ -267,48 +333,54 @@ export default {
 
       this.showOverlay = false;
     } catch (err) {
-      this.toast("Erreur!", err.message, true);
+      this.toast('Erreur!', err.message, true);
       this.showOverlay = false;
-      this.$router.push("/admin");
+      this.$router.push('/admin');
     }
   },
   methods: {
     addQuestion() {
       this.questions.push({
-        question: "",
+        question: '',
         xps: 10,
         answers: [
-          { answer: "", is_correct: false },
-          { answer: "", is_correct: true },
+          { answer: '', is_correct: false },
+          { answer: '', is_correct: true },
         ],
         quizz_id: this.editing ? this.form.id : null,
       });
     },
-    deleteQuestion(q_index) {
-      if (confirm("Supprimer définitivement cette question?"))
-        this.questions.splice(q_index, 1);
+    deleteQuestion() {
+      // if (confirm('Supprimer définitivement cette question?'))
+      this.questions.splice(this.currentQuestionIndex, 1);
+      this.currentQuestionIndex = null;
     },
     deleteAnswer(q_index, a_index) {
-      if (confirm("Supprimer définitivement cette réponse?"))
-        this.questions[q_index].answers.splice(a_index, 1);
+      // if (confirm('Supprimer définitivement cette réponse?'))
+      this.questions[this.currentQuestionIndex].answers.splice(
+        this.currentAnswerIndex,
+        1
+      );
+      this.currentAnswerIndex = null;
     },
     addAnswer(q_index) {
-      this.questions[q_index].answers.push({ answer: "", is_correct: false });
+      this.questions[q_index].answers.push({ answer: '', is_correct: false });
     },
     onReset(evt) {
       evt.preventDefault();
-      this.$router.push("/admin");
+      this.$router.push('/admin');
     },
-    async deleteQuiz(evt) {
+    // async deleteQuiz(evt) {
+    async deleteQuiz() {
       this.showOverlay = true;
-      evt.preventDefault();
+      // evt.preventDefault();
       try {
         const delReq = await AdminQuiz.deleteQuiz(this.form.id);
-        this.toast("Supprimé!", delReq.data.message);
+        this.toast('Supprimé!', delReq.data.message);
         this.showOverlay = false;
-        this.$router.push("/admin");
+        this.$router.push('/admin');
       } catch (err) {
-        this.toast("Erreur!", err.message, true);
+        this.toast('Erreur!', err.message, true);
         this.showOverlay = false;
       }
     },
@@ -327,7 +399,7 @@ export default {
           const updQuestions = await AdminQuiz.addQuestions({
             data: { questions: this.questions },
           });
-          this.toast("Modifié!!", updQuestions.data.message);
+          this.toast('Modifié!!', updQuestions.data.message);
         } else {
           const newQuiz = await AdminQuiz.addQuiz({ data: this.form });
           const newQuizId = newQuiz.data.id;
@@ -336,20 +408,20 @@ export default {
             data: { questions: this.questions },
           });
 
-          this.toast("Ajouté!", newQuestions.data.message);
+          this.toast('Ajouté!', newQuestions.data.message);
         }
         this.showOverlay = false;
-        this.$router.push("/admin");
+        this.$router.push('/admin');
       } catch (err) {
-        this.toast("Erreur!", err.message, true);
+        this.toast('Erreur!', err.message, true);
         this.showOverlay = false;
       }
     },
     toast(title, message, faulty = false) {
       this.$root.$bvToast.toast(message, {
         title: title,
-        toaster: "b-toaster-top-center",
-        variant: faulty ? "danger" : "success",
+        toaster: 'b-toaster-top-center',
+        variant: faulty ? 'danger' : 'success',
         appendToast: true,
       });
     },
@@ -359,19 +431,36 @@ export default {
       this.form.category.name = catName.text;
 
       if (value == 0) {
-        let newCat = prompt("Entrez une nouvelle valeur");
+        let newCat = prompt('Entrez une nouvelle valeur');
+        // this.showModal();
         if (newCat) {
           const addCat = await AdminQuiz.addCategory({
             data: { name: newCat },
           });
           const categories = await AdminQuiz.getCategories();
           this.categories = [
-            { text: "Selectionnez...", value: null },
-            { text: "+ Ajouter une valeur...", value: 0 },
+            { text: 'Selectionnez...', value: null },
+            { text: '+ Ajouter une valeur...', value: 0 },
           ].concat(categories.data);
           this.form.category._id = addCat.data.id;
         }
       }
+    },
+
+    // showModal() {
+    //   this.$refs['modalNewCat'].show();
+    // },
+
+    setCurrentQuestion(question, q_index) {
+      this.currentQuestion = question;
+      this.currentQuestionIndex = q_index;
+    },
+
+    setCurrentAnswer(question, q_index, a_index) {
+      this.currentQuestionIndex = q_index;
+
+      this.currentAnswer = question.answers[a_index].answer;
+      this.currentAnswerIndex = a_index;
     },
   },
 };
