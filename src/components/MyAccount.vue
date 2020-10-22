@@ -3,7 +3,7 @@
     <div class="d-flex flex-row flex-wrap justify-content-around mx-2">
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 px-2 mt-5">
         <div class="card my-2">
-          <div class="card-header text-center  bg-theme">
+          <div class="card-header text-center bg-theme">
             <div>Mon Compte</div>
           </div>
           <div class="card-body text-center">
@@ -47,12 +47,19 @@
             >
               Envoyer
             </button>
+
+            <div>
+              <small class="font-italic text-muted">
+                Il vous sera demandé de vous reconnecter avec les nouvelles
+                informations afin de valider le changement</small
+              >
+            </div>
           </div>
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 px-2 mt-5">
         <div class="card my-2">
-          <div class="card-header  bg-theme text-center">
+          <div class="card-header bg-theme text-center">
             <div>Modifier le mot de passe</div>
           </div>
           <div class="card-body text-center">
@@ -128,7 +135,8 @@ export default {
     saveUser() {
       User.saveUser(this.id, this.userForm)
         .then(() => {
-          this.$router.push({ name: "Login" });
+          this.logout();
+          //this.$router.push({ name: "Login" });
         })
         .catch((error) => {
           if (error.response.status === 422) {
@@ -136,17 +144,44 @@ export default {
           }
         });
     },
+
     resetPassword() {
-      User.resetPassword(this.id, this.passForm)
-        .then(() => {
-          localStorage.removeItem("token");
-          this.$router.push({ name: "Login" });
-        })
-        .catch((error) => {
-          if (error.response.status === 422) {
-            this.errors = error.response.data.errors;
-          }
-        });
+      if (this.passForm.password == this.passForm.password2) {
+        User.resetPassword(this.id, this.passForm)
+          .then((response) => {
+            //console.log(response.data);
+            this.toast("Message", "Mot de passe modifié", false);
+          })
+          .catch((error) => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
+          });
+      } else {
+        this.toast(
+          "Message",
+          "Le mot de passe et la confirmation doivent être identiques!",
+          true
+        );
+      }
+    },
+
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("status");
+      this.$store.commit("setToken", null);
+      this.$store.commit("setStatus", null);
+      this.$store.commit("setUser", null);
+      this.$router.push("/login");
+    },
+
+    toast(title, message, faulty = false) {
+      this.$root.$bvToast.toast(message, {
+        title: title,
+        toaster: "b-toaster-top-center",
+        variant: faulty ? "danger" : "success",
+        appendToast: true,
+      });
     },
   },
 };
