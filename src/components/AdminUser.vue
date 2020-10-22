@@ -15,9 +15,11 @@
             placeholder="Rechercher un utilisateur"
           >
           </b-form-input>
-          <!-- <b-input-group-append class="x-button">
-            <b-button variant="info" @click="reset"><strong>x</strong></b-button>
-          </b-input-group-append> -->
+          <b-input-group-append class="x-button">
+            <b-button variant="info" @click="reset"
+              ><strong>x</strong></b-button
+            >
+          </b-input-group-append>
         </b-input-group>
         <!-- <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon> -->
       </b-col>
@@ -368,6 +370,16 @@ export default {
       } else {
         this.filteredUsers = this.users;
       }
+    },
+
+    reset() {
+      this.searchedUser = '';
+      this.filteredUsers = this.users;
+      // this.selectedLang = "";
+      // this.selectedLevel = "";
+      // this.searchItem = "";
+      // this.sorting = "desc";
+      // this.getAllQuizzes();
     },
   },
 };
