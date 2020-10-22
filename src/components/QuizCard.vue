@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="d-flex align-items-center justify-content-between">
-          <h6 class="mb-0">{{ quiz.category.name }}</h6>
+          <h6 class="mb-0">{{ quiz.category ? quiz.category.name : "" }}</h6>
           <div class="mw-75">
             <b-form-rating
               v-if="quiz.avg_rating > 0"

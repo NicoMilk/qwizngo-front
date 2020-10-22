@@ -100,10 +100,8 @@
       <div>
         <h4>Suggestion pour monter en niveau</h4>
         <QuizCard :quiz="suggestQuiz" class="bg-theme card-inline" />
-      </div>
-    </b-container>
-
-    <!-- ************** fin Suggestion Quiz ***********-->
+      </div> </b-container
+    ><!-- ************** fin Suggestion Quiz ***********-->
 
     <b-container>
       <div>
@@ -260,7 +258,7 @@ export default {
     const suggest = await Quiz.getSuggestion(auth.data.id);
     this.suggestQuiz = suggest.data;
   },
-  computed: {
+  /* computed: {
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -269,7 +267,7 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-  },
+  }, */
 
   methods: {
     onFiltered(filteredItems) {
