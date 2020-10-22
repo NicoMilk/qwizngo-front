@@ -23,7 +23,12 @@
             {{ comment.comment }}
           </b-card-text>
           <small>
-            Par {{ comment.user_id.name }}, le
+            Par
+            {{
+              comment.user_id && comment.user_id
+                ? comment.user_id.name
+                : "Inconnu"
+            }}, le
             {{ new Date(comment.created_at).toUTCString().substring(5, 25) }}
           </small>
         </div>
@@ -31,6 +36,7 @@
           class="d-flex flex-column justify-content-around"
           v-if="
             ($store.state.user &&
+              comment.user_id &&
               $store.state.user.email == comment.user_id.email) ||
             isAdmin
           "
