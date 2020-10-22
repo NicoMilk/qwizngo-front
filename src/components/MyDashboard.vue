@@ -92,13 +92,7 @@
     </b-container>
 
     <!-- *************** Suggestion Quiz *************-->
-    <b-container>
-      <div v-if="suggestQuiz">
-        <h4>Quiz suggéré selon votre activité</h4>
-        <QuizCard :quiz="suggestQuiz"></QuizCard>
-      </div>
-      <div v-else>Relancez les quizz afin d'améliorer votre score !</div>
-    </b-container>
+
     <!-- ************** fin Suggestion Quiz ***********-->
 
     <b-container>
