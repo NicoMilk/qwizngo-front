@@ -1,7 +1,7 @@
 <template>
   <div class="QuizCard my-2 shadow">
     <b-card class="h-100" style="max-width: 21rem; min-width: 21rem">
-      <b-card-text class="d-flex justify-content-between flex-column">
+      <b-card-text class="h-100 d-flex justify-content-between flex-column">
         <div class="d-flex justify-content-between">
           <router-link
             :to="'/quiz/' + quiz.id"

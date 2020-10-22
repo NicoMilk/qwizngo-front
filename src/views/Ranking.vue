@@ -1,30 +1,8 @@
 <template>
-  <b-container id="top" class="py-3 text-center">
-    <b-col class="sticky-top ">
-      <h1 class="bg-light my-4">CLASSEMENT :</h1>
-    </b-col>
-
-    <!-- CURRENT USER CARD -->
-    <!-- TODO REMOVE IF NOT USED -->
-    <!-- <b-card
-        style="max-width: 30rem;"
-        class="mb-4 text-center pointer"
-        :title="currentUser.name"
-        v-scroll-to="{
-          el: '#x' + currentUser.id,
-          offset: -500,
-          easing: 'ease-in-out',
-        }"
-      >
-        <b-card-text>
-          <h4>Place : {{ currentUserRank }}</h4>
-        </b-card-text>
-        <b-card-text>
-          <h4>Score : {{ currentUser.score }} XPs</h4>
-        </b-card-text>
-      </b-card> -->
-
-    <!-- <div id="top"></div> -->
+  <b-container id="top" class="py-3 text-center h100">
+    <div class="sticky-top flag bg-light ">
+      <h2 class="bg-warning my-4 py-2">CLASSEMENT</h2>
+    </div>
 
     <!-- RANKING CARDS -->
     <div v-for="(user, idx) in users" :key="idx">
@@ -39,17 +17,8 @@
         :id="'x' + user.id"
       >
         <b-card-text>
-          <b-row>
-            <b-col md="2">
-              <h5>{{ idx + 1 }}</h5>
-            </b-col>
-            <b-col md="4">
-              <h5 class="text-left pl-5">{{ user.name }}</h5>
-            </b-col>
-            <b-col md="4">
-              <h5>{{ user.score }} XPs</h5>
-            </b-col>
-            <b-col md="1">
+          <b-row align-v="center">
+            <b-col md="4" class="col-12">
               <b-icon
                 v-if="idx + 1 === 1"
                 icon="award-fill"
@@ -68,7 +37,17 @@
                 font-scale="2"
                 style="color: brown"
               ></b-icon>
+              <h4 class="align-self-center my-2 text-theme">
+                position <strong>{{ idx + 1 }}</strong>
+              </h4>
             </b-col>
+            <b-col md="4" class="col-6">
+              <h5 class="text-center">{{ user.name }}</h5>
+            </b-col>
+            <b-col md="4" class="col-6">
+              <h5>{{ user.score }} XP</h5>
+            </b-col>
+
             <!-- <b-col md="1">
               <b-icon
                 v-if="showBackToTop === user.id"
@@ -103,8 +82,8 @@
 </template>
 
 <script>
-import AdminUser from '../apis/AdminUser.js';
-import User from '../apis/User';
+import AdminUser from "../apis/AdminUser.js";
+import User from "../apis/User";
 
 export default {
   data() {
@@ -120,7 +99,7 @@ export default {
   async mounted() {
     // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     const users = await AdminUser.getUsers();
-    const sortedUsers = _.orderBy(users.data, ['score'], ['desc']);
+    const sortedUsers = _.orderBy(users.data, ["score"], ["desc"]);
     this.users = sortedUsers;
     // console.log('USERS :', this.users);
 
@@ -137,7 +116,7 @@ export default {
     // autoScroll options :
     var options = {
       // container: '#container',
-      easing: 'ease-in-out',
+      easing: "ease-in-out",
       offset: -400,
       force: true,
       cancelable: true,
@@ -145,7 +124,7 @@ export default {
       y: true,
     };
 
-    var autoScroll = this.$scrollTo('#x' + this.currentUser.id, options);
+    var autoScroll = this.$scrollTo("#x" + this.currentUser.id, options);
     // console.log('AUTOSCROLL :', autoScroll);
   },
 };

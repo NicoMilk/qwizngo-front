@@ -1,6 +1,6 @@
 <template>
-  <div class="container mt-3">
-    <div class="row justify-content-center">
+  <div class="container h100">
+    <div class="row justify-content-center pt-5">
       <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-theme text-center">Connexion</div>
