@@ -130,18 +130,31 @@
       </div>
     </b-container>
     <!-- MODAL CATEORIES-->
-    <b-modal id="categories-panel" title="Categories">
+    <b-modal id="categories-panel" title="Categories" @hide="catClose">
       <b-container class="container">
         <b-form>
+          <div class="d-flex">
+            <b-input
+              type="text"
+              v-model="newCat"
+              placeholder="Nouvelle valeur..."
+            />
+            <b-icon
+              icon="plus-circle"
+              class="h4 mt-2 ml-1 pointer"
+              variant="info"
+              @click="addCat"
+            />
+          </div>
           <div v-for="(cat, idx) in cats" :key="idx">
             <div class="d-flex">
               <b-input type="text" v-model="cat.text" />
-              <!-- <b-button size="sm" variant="info">
-                <b-icon icon="pencil" />
-              </b-button> -->
-              <b-button size="sm" variant="warning" @click="removeCat">
-                <b-icon icon="trash" />
-              </b-button>
+              <b-icon
+                class="h4 mt-2 ml-1 pointer"
+                icon="trash"
+                variant="danger"
+                @click="removeCat(idx)"
+              />
             </div>
           </div>
         </b-form>
@@ -151,11 +164,7 @@
           <b-button variant="info" @click="$bvModal.hide('categories-panel')"
             >Annuler</b-button
           >
-          <b-button
-            @click="submitChanges(), $bvModal.hide('categories-panel')"
-            variant="success"
-            >Valider</b-button
-          >
+          <b-button @click="saveCats()" variant="success">Valider</b-button>
         </b-container>
       </template>
     </b-modal>
@@ -180,6 +189,7 @@ export default {
       comments: null,
       hearted: null,
       cats: [],
+      newCat: "",
     };
   },
 
@@ -188,7 +198,7 @@ export default {
     this.allQuizz = quizzes.data;
     this.quizz = quizzes.data;
     let categories = await AdminQuiz.getCategories();
-    categories.data.map((c) => (c.orginal = c.text));
+    categories.data.map((c) => (c.original = c.text));
     this.cats = categories.data;
     this.options = [{ text: "Techno / Langage : tous", value: "" }].concat(
       categories.data
@@ -197,9 +207,29 @@ export default {
   },
   computed: {},
   methods: {
-    removeCat(e) {
-      console.log(e); //.target.original == e.target.value);
-      //return e.target.original == e.target.value;
+    catClose() {
+      this.cats.map((c) => {
+        if (c.value) c.text = c.original;
+      });
+      console.log("closing");
+    },
+    removeCat(idx) {
+      this.cats.splice(idx, 1);
+      console.log(idx);
+      return false;
+    },
+    addCat() {
+      this.cats.unshift({ value: "", text: this.newCat });
+      return false;
+    },
+    saveCats() {
+      this.cats.forEach((c) => {
+        if (c.text != c.original) {
+          console.log(c.text, c.original);
+        }
+      });
+      this.cats.map((c) => (c.original = c.text));
+      this.$bvModal.hide("categories-panel");
       return false;
     },
     publishToggle(idx) {

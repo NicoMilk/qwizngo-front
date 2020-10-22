@@ -1,6 +1,6 @@
 <template>
-  <b-container class="py-3">
-    <div class="d-flex flex-wrap justify-content-around">
+  <b-container class="my-5">
+    <div class="d-flex flex-wrap justify-content-around mb-5">
       <b-col md="6" class="text-center col-12 py-2">
         <b-button variant="success" v-b-modal.modalNewUser
           >Ajouter un utilisateur</b-button
@@ -218,27 +218,27 @@
 </template>
 
 <script>
-import AdminUser from '../apis/AdminUser.js';
-import User from '../apis/User.js';
-import VueLodash from 'vue-lodash';
-import lodash from 'lodash';
+import AdminUser from "../apis/AdminUser.js";
+import User from "../apis/User.js";
+import VueLodash from "vue-lodash";
+import lodash from "lodash";
 
 export default {
   data() {
     return {
       users: [],
       filteredUsers: [],
-      searchedUser: '',
-      currentUser: '',
+      searchedUser: "",
+      currentUser: "",
       form: {
         // id: null,
-        name: '',
-        email: '',
-        password: '',
-        pwdConfirm: '',
-        role: 'user',
+        name: "",
+        email: "",
+        password: "",
+        pwdConfirm: "",
+        role: "user",
       },
-      roles: ['user', 'admin'],
+      roles: ["user", "admin"],
     };
   },
 
@@ -248,7 +248,7 @@ export default {
       const x = _.orderBy(
         response.data,
         [(user) => user.name.toLowerCase()],
-        ['asc']
+        ["asc"]
       );
       this.users = x;
       this.filteredUsers = x;
@@ -265,11 +265,11 @@ export default {
     resetNewUserForm(evt) {
       evt.preventDefault();
       // Reset our form values
-      this.form.name = '';
-      this.form.email = '';
-      this.form.password = '';
-      this.form.pwdConfirm = '';
-      this.form.role = 'user';
+      this.form.name = "";
+      this.form.email = "";
+      this.form.password = "";
+      this.form.pwdConfirm = "";
+      this.form.role = "user";
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
@@ -335,7 +335,7 @@ export default {
         console.log(this.users[idx]);
         const updUser = await AdminUser.updateUser(this.users[idx]);
       } catch (err) {
-        console.error('Error from updUser :', error);
+        console.error("Error from updUser :", error);
       }
     },
 
@@ -351,14 +351,14 @@ export default {
         );
         await this.users.splice(deletedUserIndex, 1);
       } catch (error) {
-        console.error('Error from deleteUser :', error);
+        console.error("Error from deleteUser :", error);
         // }
       }
     },
 
     async filter() {
       if (this.searchedUser) {
-        const regex = new RegExp(this.searchedUser, 'i');
+        const regex = new RegExp(this.searchedUser, "i");
         this.filteredUsers = this.users.filter((user) => {
           return user.name.match(regex);
         });
@@ -373,7 +373,7 @@ export default {
     },
 
     reset() {
-      this.searchedUser = '';
+      this.searchedUser = "";
       this.filteredUsers = this.users;
       // this.selectedLang = "";
       // this.selectedLevel = "";
