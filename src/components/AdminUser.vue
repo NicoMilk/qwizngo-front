@@ -1,26 +1,27 @@
 <template>
   <b-container class="py-3">
-    <div class="d-flex justify-content-center">
-      <b-button class="my-4" variant="success" v-b-modal.modalNewUser
-        >Ajouter un utilisateur</b-button
-      >
-    </div>
-
-    <b-col class="mb-4">
-      <b-input-group>
-        <b-form-input
-          @input="filter"
-          v-model="searchedUser"
-          type="text"
-          placeholder="Rechercher un utilisateur"
+    <div class="d-flex flex-wrap justify-content-around">
+      <b-col md="6" class="text-center col-12 py-2">
+        <b-button variant="success" v-b-modal.modalNewUser
+          >Ajouter un utilisateur</b-button
         >
-        </b-form-input>
-        <b-input-group-append class="x-button">
-          <!-- <b-button variant="info" @click="reset"><strong>x</strong></b-button> -->
-        </b-input-group-append>
-      </b-input-group>
-      <!-- <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon> -->
-    </b-col>
+      </b-col>
+      <b-col md="6" class="text-center col-12 py-2">
+        <b-input-group>
+          <b-form-input
+            @input="filter"
+            v-model="searchedUser"
+            type="text"
+            placeholder="Rechercher un utilisateur"
+          >
+          </b-form-input>
+          <!-- <b-input-group-append class="x-button">
+            <b-button variant="info" @click="reset"><strong>x</strong></b-button>
+          </b-input-group-append> -->
+        </b-input-group>
+        <!-- <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon> -->
+      </b-col>
+    </div>
 
     <div
       v-for="(user, idx) in filteredUsers"
