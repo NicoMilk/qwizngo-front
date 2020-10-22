@@ -1,12 +1,10 @@
 <template>
   <div class="bg-light">
-    <div>
-      <NavBar
-        :isLoggedIn="this.$store.getters.loggedIn"
-        :isAdmin="this.$store.getters.isAdmin"
-      />
-      <router-view />
-    </div>
+    <NavBar
+      :isLoggedIn="this.$store.getters.loggedIn"
+      :isAdmin="this.$store.getters.isAdmin"
+    />
+    <router-view />
     <NavFooter class="nav-footer" />
   </div>
 </template>

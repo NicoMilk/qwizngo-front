@@ -129,9 +129,22 @@
         </b-card>
       </div>
     </b-container>
+    <!-- MODAL CATEORIES-->
     <b-modal id="categories-panel" title="Categories">
       <b-container class="container">
-        <b-form> </b-form>
+        <b-form>
+          <div v-for="(cat, idx) in cats" :key="idx">
+            <div class="d-flex">
+              <b-input type="text" v-model="cat.text" />
+              <!-- <b-button size="sm" variant="info">
+                <b-icon icon="pencil" />
+              </b-button> -->
+              <b-button size="sm" variant="warning" @click="removeCat">
+                <b-icon icon="trash" />
+              </b-button>
+            </div>
+          </div>
+        </b-form>
       </b-container>
       <template v-slot:modal-footer>
         <b-container fluid class="d-flex justify-content-around">
@@ -166,21 +179,29 @@ export default {
       options: [],
       comments: null,
       hearted: null,
+      cats: [],
     };
   },
 
   async mounted() {
-    // AdminQuiz.getAllQuizzWithStats().then((response) => {
-    //   this.quizz = response.data;
-    // });
     const quizzes = await AdminQuiz.getAllQuizzWithStats();
     this.allQuizz = quizzes.data;
     this.quizz = quizzes.data;
-    const categories = await AdminQuiz.getCategories();
-    categories.data.unshift({ text: "Techno / Langage : tous", value: "" });
-    this.options = categories.data;
+    let categories = await AdminQuiz.getCategories();
+    categories.data.map((c) => (c.orginal = c.text));
+    this.cats = categories.data;
+    this.options = [{ text: "Techno / Langage : tous", value: "" }].concat(
+      categories.data
+    );
+    console.log(this.cats);
   },
+  computed: {},
   methods: {
+    removeCat(e) {
+      console.log(e); //.target.original == e.target.value);
+      //return e.target.original == e.target.value;
+      return false;
+    },
     publishToggle(idx) {
       let quizId = this.quizz[idx].id;
       let pubStatus = this.quizz[idx].is_published;
