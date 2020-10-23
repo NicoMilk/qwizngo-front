@@ -2,6 +2,7 @@
   <div class="container pt-5 h100">
     <div class="row justify-content-center">
       <div class="col-md-8">
+        <!-- début card -->
         <div class="text-center">
           <h4 class>Enregistrer un compte</h4>
           <div class="py-4">
@@ -77,6 +78,8 @@
             </button>
           </div>
         </div>
+
+        <!-- *********** fin card *************-->
       </div>
     </div>
   </div>
