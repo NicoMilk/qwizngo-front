@@ -426,7 +426,6 @@ export default {
       });
     },
     async selectCategory(value) {
-      console.log(value);
       let catName = this.categories.find((cat) => cat.value == value);
       this.form.category.name = catName.text;
 
