@@ -37,7 +37,7 @@
           </g>
         </svg>
         <svg
-          width="90%"
+          width="200"
           height="24"
           viewBox="0 0 213 32"
           version="1.1"

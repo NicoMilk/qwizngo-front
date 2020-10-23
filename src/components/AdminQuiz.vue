@@ -68,17 +68,6 @@
             {{ quiz.is_published ? "Dépublier" : "Publier" }}
           </b-button>
         </b-col>
-        <!-- <b-col v-else md="2">
-          <b-button id="colorHack1" variant="outline-success" class="btn-block">
-            <b-icon
-              id="colorHack2"
-              icon="box-arrow-in-down"
-              variant="success"
-              class="mr-1"
-            ></b-icon>
-            Dépublier
-          </b-button>
-        </b-col> -->
       </b-row>
     </div>
     <!--  -->
@@ -107,7 +96,6 @@ export default {
   },
   mounted() {
     AdminQuiz.getQuizzes().then((response) => {
-      // console.log(response.data)
       this.quizz = response.data;
     });
   },
@@ -125,7 +113,6 @@ export default {
       let pubStatus = this.quizz[idx].is_published;
       AdminQuiz.updateQuiz({ quizId, data: { is_published: !pubStatus } }).then(
         (response) => {
-          console.log(response.data);
           this.quizz[idx].is_published = !pubStatus;
         }
       );
@@ -145,8 +132,4 @@ export default {
 #labels {
   margin-top: 20px;
 }
-
-/* #colorHack1:hover ~ #colorHack2 {
-  color: red;
-} */
 </style>
