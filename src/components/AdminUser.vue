@@ -206,9 +206,7 @@
           <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
           <b-button @click="resetNewUserForm" variant="danger">Reset</b-button>
           <!-- <b-button type="submit" variant="success">Valider</b-button> -->
-          <b-button
-            @click="submitNewUserForm(), $bvModal.hide('modalNewUser')"
-            variant="success"
+          <b-button @click="submitNewUserForm()" variant="success"
             >Valider</b-button
           >
         </b-container>
@@ -298,6 +296,14 @@ export default {
     //     this.errors = 1; // ???
     //   }
     // },
+    toast(title, message, faulty = false) {
+      this.$root.$bvToast.toast(message, {
+        title: title,
+        toaster: "b-toaster-top-center",
+        variant: faulty ? "danger" : "success",
+        appendToast: true,
+      });
+    },
 
     submitNewUserForm() {
       if (
@@ -309,24 +315,46 @@ export default {
       ) {
         // console.log('XXX :', this.users);
         if (this.form.password == this.form.pwdConfirm) {
-          User.register(this.form).then((response) => {
-            // console.log('RESPONSE.DATA :', response.data);
-            const new_user = response.data.new_user;
-            const newUser = {
-              id: new_user._id,
-              name: new_user.name,
-              email: new_user.email,
-              password: new_user.password,
-              role: new_user.role,
-              score: new_user.score,
-            };
-            // console.log('NEW USER :', newUser);
-            this.users.push(newUser);
-          });
+          User.register(this.form)
+            .then((response) => {
+              //console.log("RESPONSE.DATA :", response.data);
+              if (response.data.error) {
+                this.toast("Erreur!", response.data.error, true);
+              } else {
+                const new_user = response.data.newUser;
+                const newUser = {
+                  id: new_user._id,
+                  name: new_user.name,
+                  email: new_user.email,
+                  password: new_user.password,
+                  role: new_user.role,
+                  score: new_user.score,
+                };
+                this.users.push(newUser);
+                this.$bvModal.hide("modalNewUser");
+                this.toast("Message", "Utilisateur créé !", false);
+                this.form.name = "";
+                this.form.email = "";
+                this.form.password = "";
+                this.form.pwdConfirm = "";
+                this.form.role = "user";
+              }
+            })
+            .catch((error) => {
+              this.toast("Erreur!", error.message, true);
+            });
           // console.log('New User :', newUser);
           // this.users.push(newUser);
           // console.log('YYY :', this.users);
+        } else {
+          this.toast(
+            "Erreur!",
+            "Le mot de passe et la confirmation doivent être identiques",
+            true
+          );
         }
+      } else {
+        this.toast("Erreur!", "Tous les champs sont obligatoires", true);
       }
     },
 

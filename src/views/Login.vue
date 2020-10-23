@@ -3,7 +3,7 @@
     <div class="row justify-content-center pt-5">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header bg-theme text-center">Connexion</div>
+          <div class="card-header bg-theme text-center"><h5>Connexion</h5></div>
           <div class="card-body">
             <div class="form-group row">
               <label for="email" class="col-md-4 col-form-label text-md-right"

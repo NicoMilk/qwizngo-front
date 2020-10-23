@@ -2,81 +2,87 @@
   <div class="container pt-5 h100">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="text-center">
-          <h4 class>Enregistrer un compte</h4>
-          <div class="py-4">
-            <div class="form-group row">
-              <label for="name" class="col-md-4 col-form-label text-md-right"
-                >Nom</label
-              >
-              <div class="col-md-6">
-                <input
-                  v-model="form.name"
-                  id="name"
-                  type="text"
-                  class="form-control"
-                  required
-                  autofocus
-                  placeholder="Entrez un nom..."
-                />
-                <span class="invalid-feedback" role="alert"></span>
+        <!-- début card -->
+        <div class="card">
+          <div class="card-header bg-theme text-center">
+            <h5>Enregistrer un compte</h5>
+          </div>
+          <div class="card-body text-center">
+            <div class="py-2">
+              <div class="form-group row">
+                <label for="name" class="col-md-4 col-form-label text-md-right"
+                  >Nom</label
+                >
+                <div class="col-md-6">
+                  <input
+                    v-model="form.name"
+                    id="name"
+                    type="text"
+                    class="form-control"
+                    required
+                    autofocus
+                    placeholder="Entrez un nom..."
+                  />
+                  <span class="invalid-feedback" role="alert"></span>
+                </div>
               </div>
-            </div>
-            <div class="form-group row">
-              <label for="email" class="col-md-4 col-form-label text-md-right"
-                >Adresse E-mail</label
-              >
-              <div class="col-md-6">
-                <input
-                  v-model="form.email"
-                  id="email"
-                  type="email"
-                  class="form-control"
-                  required
-                  placeholder="utilisateur@exemple.fr"
-                />
-                <span class="invalid-feedback" role="alert"></span>
+              <div class="form-group row">
+                <label for="email" class="col-md-4 col-form-label text-md-right"
+                  >Adresse E-mail</label
+                >
+                <div class="col-md-6">
+                  <input
+                    v-model="form.email"
+                    id="email"
+                    type="email"
+                    class="form-control"
+                    required
+                    placeholder="utilisateur@exemple.fr"
+                  />
+                  <span class="invalid-feedback" role="alert"></span>
+                </div>
               </div>
-            </div>
-            <div class="form-group row">
-              <label for="pass1" class="col-md-4 col-form-label text-md-right"
-                >Mot de passe</label
-              >
-              <div class="col-md-6">
-                <input
-                  v-model="form.password"
-                  id="pass1"
-                  type="password"
-                  class="form-control"
-                  required
-                />
-                <span class="invalid-feedback" role="alert"></span>
+              <div class="form-group row">
+                <label for="pass1" class="col-md-4 col-form-label text-md-right"
+                  >Mot de passe</label
+                >
+                <div class="col-md-6">
+                  <input
+                    v-model="form.password"
+                    id="pass1"
+                    type="password"
+                    class="form-control"
+                    required
+                  />
+                  <span class="invalid-feedback" role="alert"></span>
+                </div>
               </div>
-            </div>
-            <div class="form-group row">
-              <label for="pass2" class="col-md-4 col-form-label text-md-right"
-                >Confirmer le mot de passe</label
-              >
-              <div class="col-md-6">
-                <input
-                  v-model="form.password2"
-                  id="pass2"
-                  type="password"
-                  class="form-control"
-                  required
-                />
-                <span class="invalid-feedback" role="alert"></span>
+              <div class="form-group row">
+                <label for="pass2" class="col-md-4 col-form-label text-md-right"
+                  >Confirmer le mot de passe</label
+                >
+                <div class="col-md-6">
+                  <input
+                    v-model="form.password2"
+                    id="pass2"
+                    type="password"
+                    class="form-control"
+                    required
+                  />
+                  <span class="invalid-feedback" role="alert"></span>
+                </div>
               </div>
+              <button
+                type="submit"
+                @click="register"
+                class="btn btn-primary my-4"
+              >
+                Créer un compte
+              </button>
             </div>
-            <button
-              type="submit"
-              @click="register"
-              class="btn btn-primary my-4"
-            >
-              Créer un compte
-            </button>
           </div>
         </div>
+        <!-- *********** fin card *************-->
       </div>
     </div>
   </div>
