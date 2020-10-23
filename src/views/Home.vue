@@ -111,7 +111,6 @@ export default {
   methods: {
     search_text() {
       var inside = this;
-      console.log(this.search.text, inside);
     },
     async getAllQuizzes() {
       Quiz.getPublishedQuizzes().then((result) => {

@@ -127,7 +127,6 @@ export default {
           //this.form.password = hashedPwd; //
           User.register(this.form)
             .then((response) => {
-              console.log("res data", response.data);
               if (response.data.error) {
                 this.toast("Erreur!", response.data.error, true);
               } else {

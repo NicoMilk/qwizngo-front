@@ -38,7 +38,7 @@
             ($store.state.user &&
               comment.user_id &&
               $store.state.user.email == comment.user_id.email) ||
-            isAdmin
+              isAdmin
           "
         >
           <b-icon
@@ -136,7 +136,6 @@ export default {
       Comments.getComments(
         this.$route.params.quiz_id || this.$props.quizId
       ).then((response) => {
-        //console.log(response.data);
         this.comments = response.data;
       });
     },
@@ -166,16 +165,13 @@ export default {
       payload.quizzId = this.currentComment.id;
       payload.data = { comment: this.updatedComment };
       Comments.updateComment(payload).then((response) => {
-        console.log(response.data);
         this.updatedComment = "";
         this.getComments();
       });
     },
 
     deleteComment() {
-      //console.log(id);
       Comments.deleteComment(this.currentComment.id).then((response) => {
-        console.log(response.data);
         this.getComments();
       });
     },

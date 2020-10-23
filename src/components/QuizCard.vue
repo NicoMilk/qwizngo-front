@@ -92,7 +92,7 @@ export default {
             //this.userId,
             this.$store.state.user.id,
             this.$store.state.user.favorites
-          ).then((response) => console.log("fav", response.data));
+          );
         }
       }
     },

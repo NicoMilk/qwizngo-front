@@ -21,7 +21,6 @@
             >
           </b-input-group-append>
         </b-input-group>
-        <!-- <b-icon icon="search" class="h4 pb-1 search-icon"></b-icon> -->
       </b-col>
     </div>
 
@@ -62,8 +61,6 @@
           role="tabpanel"
         >
           <b-card-body>
-            <!-- <b-form @submit="onSubmit" @reset="onReset" v-if="show"> -->
-            <!-- <b-form> -->
             <b-form-group id="input-name" label="Nom :" label-for="userName">
               <b-form-input
                 id="userName"
@@ -111,12 +108,7 @@
                 @click="setCurrentUser(user)"
                 >Supprimer</b-button
               >
-              <!-- <b-button @click="deleteUser(user.id)" variant="danger"
-                >Supprimer</b-button
-              > -->
-              <!-- <b-button @click="showMsgBoxOne" variant="danger"
-                >Supprimer</b-button
-              > -->
+
               <b-button @click="updUser(idx)" variant="success"
                 >Modifier</b-button
               >
@@ -147,7 +139,6 @@
     <!-- NEW USER MODAL -->
     <b-modal id="modalNewUser" title="Nouvel Utilisateur">
       <b-container class="container">
-        <!-- <b-form @submit="onSubmit" @reset="onReset"> -->
         <b-form>
           <b-form-group id="input-name" label="Username :" label-for="name">
             <b-form-input id="name" v-model="form.name" required></b-form-input>
@@ -203,9 +194,7 @@
           <b-button variant="info" @click="$bvModal.hide('modalNewUser')"
             >Annuler</b-button
           >
-          <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
           <b-button @click="resetNewUserForm" variant="danger">Reset</b-button>
-          <!-- <b-button type="submit" variant="success">Valider</b-button> -->
           <b-button @click="submitNewUserForm()" variant="success"
             >Valider</b-button
           >
@@ -241,7 +230,6 @@ export default {
   },
 
   mounted() {
-    // TODO ADMIN DISABLED IN users.controller -> MUST BE RE-ENABLED
     AdminUser.getUsers().then((response) => {
       const x = _.orderBy(
         response.data,
@@ -253,12 +241,6 @@ export default {
     });
   },
 
-  // computed() {
-  //   orderedUsers = () => {
-  //     return _.orderBy(this.users, 'name');
-  //   };
-  // },
-
   methods: {
     resetNewUserForm(evt) {
       evt.preventDefault();
@@ -268,34 +250,12 @@ export default {
       this.form.password = "";
       this.form.pwdConfirm = "";
       this.form.role = "user";
-      // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
       });
     },
 
-    // async submitNewUserForm() {
-    //   if (
-    //     this.form.name &&
-    //     this.form.email &&
-    //     this.form.password &&
-    //     this.form.pwdConfirm &&
-    //     this.form.role
-    //   ) {
-    //     console.log('XXX :', this.users);
-    //     if (this.form.password == this.form.pwdConfirm) {
-    //       const newUser = await User.register(this.form).catch((error) => {
-    //         this.errors = 2; // ???
-    //         this.error_message = error.response; // ???
-    //       });
-    //     }
-    //     this.users.push(newUser);
-    //     console.log('YYY :', this.users);
-    //   } else {
-    //     this.errors = 1; // ???
-    //   }
-    // },
     toast(title, message, faulty = false) {
       this.$root.$bvToast.toast(message, {
         title: title,
@@ -313,11 +273,9 @@ export default {
         this.form.pwdConfirm &&
         this.form.role
       ) {
-        // console.log('XXX :', this.users);
         if (this.form.password == this.form.pwdConfirm) {
           User.register(this.form)
             .then((response) => {
-              //console.log("RESPONSE.DATA :", response.data);
               if (response.data.error) {
                 this.toast("Erreur!", response.data.error, true);
               } else {
@@ -343,9 +301,6 @@ export default {
             .catch((error) => {
               this.toast("Erreur!", error.message, true);
             });
-          // console.log('New User :', newUser);
-          // this.users.push(newUser);
-          // console.log('YYY :', this.users);
         } else {
           this.toast(
             "Erreur!",
@@ -360,7 +315,6 @@ export default {
 
     async updUser(idx) {
       try {
-        console.log(this.users[idx]);
         const updUser = await AdminUser.updateUser(this.users[idx]);
       } catch (err) {
         console.error("Error from updUser :", error);
@@ -390,11 +344,6 @@ export default {
         this.filteredUsers = this.users.filter((user) => {
           return user.name.match(regex);
         });
-        // this.filteredUsers = this.users.filter((user) => {
-        //   return user.name.includes(this.searchedUser);
-        // });
-
-        // console.log('XXX: ', this.filteredUsers);
       } else {
         this.filteredUsers = this.users;
       }
@@ -403,11 +352,6 @@ export default {
     reset() {
       this.searchedUser = "";
       this.filteredUsers = this.users;
-      // this.selectedLang = "";
-      // this.selectedLevel = "";
-      // this.searchItem = "";
-      // this.sorting = "desc";
-      // this.getAllQuizzes();
     },
   },
 };

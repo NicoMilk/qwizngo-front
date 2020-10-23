@@ -96,7 +96,6 @@ export default {
           this.$router.push("/");
         })
         .catch((error) => {
-          console.log(error);
           if (error.response.status) {
             this.toast("Erreur!", "Mot de passe ou email incorrect", true);
           }
