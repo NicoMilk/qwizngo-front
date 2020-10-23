@@ -1,21 +1,21 @@
 <template>
-  <b-container class="pt-2 container">
+  <b-container class="pt-2 container h100">
     <b-overlay :show="showOverlay" rounded="sm">
       <div class="d-flex justify-content-between mt-3">
         <h3>
           {{
             preview
-              ? 'Visualiser Quiz'
+              ? "Visualiser Quiz"
               : editing
-              ? 'Modifier Quiz'
-              : 'Nouveau Quiz'
+              ? "Modifier Quiz"
+              : "Nouveau Quiz"
           }}
         </h3>
         <b-button
           variant="primary"
           class="mx-2"
           @click.prevent="preview = !preview"
-          >{{ preview ? 'Editer' : 'Visualiser' }}</b-button
+          >{{ preview ? "Editer" : "Visualiser" }}</b-button
         >
       </div>
       <DisplayQuiz v-if="preview" :quiz="form" :questions="questions" />
@@ -218,7 +218,7 @@
             >Supprimer</b-button
           >
           <b-button type="submit" variant="primary" class="mt-2 mx-2">{{
-            editing ? 'Enregistrer' : 'Créer'
+            editing ? "Enregistrer" : "Créer"
           }}</b-button>
         </b-container>
       </b-form>
@@ -284,8 +284,8 @@
 </template>
 
 <script>
-import AdminQuiz from '../apis/AdminQuiz';
-import DisplayQuiz from './DisplayQuiz';
+import AdminQuiz from "../apis/AdminQuiz";
+import DisplayQuiz from "./DisplayQuiz";
 export default {
   components: {
     DisplayQuiz,
@@ -306,10 +306,10 @@ export default {
       },
       questions: [],
       categories: [],
-      difficulties: ['Facile', 'Moyen', 'Difficile'],
-      currentQuestion: '',
+      difficulties: ["Facile", "Moyen", "Difficile"],
+      currentQuestion: "",
       currentQuestionIndex: null,
-      currentAnswer: '',
+      currentAnswer: "",
       currentAnswerIndex: null,
       // currentQuiz: '',
     };
@@ -319,8 +319,8 @@ export default {
     try {
       const categories = await AdminQuiz.getCategories();
       this.categories = [
-        { text: 'Selectionnez...', value: null },
-        { text: '+ Ajouter une valeur...', value: 0 },
+        { text: "Selectionnez...", value: null },
+        { text: "+ Ajouter une valeur...", value: 0 },
       ].concat(categories.data);
       const quizId = this.$route.params.quiz_id;
       if (quizId) {
@@ -333,19 +333,19 @@ export default {
 
       this.showOverlay = false;
     } catch (err) {
-      this.toast('Erreur!', err.message, true);
+      this.toast("Erreur!", err.message, true);
       this.showOverlay = false;
-      this.$router.push('/admin');
+      this.$router.push("/admin");
     }
   },
   methods: {
     addQuestion() {
       this.questions.push({
-        question: '',
+        question: "",
         xps: 10,
         answers: [
-          { answer: '', is_correct: false },
-          { answer: '', is_correct: true },
+          { answer: "", is_correct: false },
+          { answer: "", is_correct: true },
         ],
         quizz_id: this.editing ? this.form.id : null,
       });
@@ -364,11 +364,11 @@ export default {
       this.currentAnswerIndex = null;
     },
     addAnswer(q_index) {
-      this.questions[q_index].answers.push({ answer: '', is_correct: false });
+      this.questions[q_index].answers.push({ answer: "", is_correct: false });
     },
     onReset(evt) {
       evt.preventDefault();
-      this.$router.push('/admin');
+      this.$router.push("/admin");
     },
     // async deleteQuiz(evt) {
     async deleteQuiz() {
@@ -376,11 +376,11 @@ export default {
       // evt.preventDefault();
       try {
         const delReq = await AdminQuiz.deleteQuiz(this.form.id);
-        this.toast('Supprimé!', delReq.data.message);
+        this.toast("Supprimé!", delReq.data.message);
         this.showOverlay = false;
-        this.$router.push('/admin');
+        this.$router.push("/admin");
       } catch (err) {
-        this.toast('Erreur!', err.message, true);
+        this.toast("Erreur!", err.message, true);
         this.showOverlay = false;
       }
     },
@@ -399,7 +399,7 @@ export default {
           const updQuestions = await AdminQuiz.addQuestions({
             data: { questions: this.questions },
           });
-          this.toast('Modifié!!', updQuestions.data.message);
+          this.toast("Modifié!!", updQuestions.data.message);
         } else {
           const newQuiz = await AdminQuiz.addQuiz({ data: this.form });
           const newQuizId = newQuiz.data.id;
@@ -408,30 +408,29 @@ export default {
             data: { questions: this.questions },
           });
 
-          this.toast('Ajouté!', newQuestions.data.message);
+          this.toast("Ajouté!", newQuestions.data.message);
         }
         this.showOverlay = false;
-        this.$router.push('/admin');
+        this.$router.push("/admin");
       } catch (err) {
-        this.toast('Erreur!', err.message, true);
+        this.toast("Erreur!", err.message, true);
         this.showOverlay = false;
       }
     },
     toast(title, message, faulty = false) {
       this.$root.$bvToast.toast(message, {
         title: title,
-        toaster: 'b-toaster-top-center',
-        variant: faulty ? 'danger' : 'success',
+        toaster: "b-toaster-top-center",
+        variant: faulty ? "danger" : "success",
         appendToast: true,
       });
     },
     async selectCategory(value) {
-      console.log(value);
       let catName = this.categories.find((cat) => cat.value == value);
       this.form.category.name = catName.text;
 
       if (value == 0) {
-        let newCat = prompt('Entrez une nouvelle valeur');
+        let newCat = prompt("Entrez une nouvelle valeur");
         // this.showModal();
         if (newCat) {
           const addCat = await AdminQuiz.addCategory({
@@ -439,8 +438,8 @@ export default {
           });
           const categories = await AdminQuiz.getCategories();
           this.categories = [
-            { text: 'Selectionnez...', value: null },
-            { text: '+ Ajouter une valeur...', value: 0 },
+            { text: "Selectionnez...", value: null },
+            { text: "+ Ajouter une valeur...", value: 0 },
           ].concat(categories.data);
           this.form.category._id = addCat.data.id;
         }

@@ -9,6 +9,9 @@ export default {
   deleteCategory(categoryId) {
     return Api().delete("/category/" + categoryId);
   },
+  saveCategory(payload) {
+    return Api().patch("/category/" + payload.categoryId, payload.data);
+  },
   getQuizzes() {
     return Api().get("/quizz");
   },

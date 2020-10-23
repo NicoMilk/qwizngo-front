@@ -130,18 +130,39 @@
       </div>
     </b-container>
     <!-- MODAL CATEORIES-->
-    <b-modal id="categories-panel" title="Categories">
+    <b-modal id="categories-panel" title="Categories" @hide="catClose">
       <b-container class="container">
         <b-form>
+          <div class="d-flex">
+            <b-input
+              type="text"
+              v-model="newCat"
+              placeholder="Nouvelle valeur..."
+            />
+            <b-icon
+              icon="plus-circle"
+              class="h4 mt-2 ml-1 pointer"
+              variant="info"
+              @click="addCat"
+            />
+          </div>
           <div v-for="(cat, idx) in cats" :key="idx">
             <div class="d-flex">
-              <b-input type="text" v-model="cat.text" />
-              <!-- <b-button size="sm" variant="info">
-                <b-icon icon="pencil" />
-              </b-button> -->
-              <b-button size="sm" variant="warning" @click="removeCat">
-                <b-icon icon="trash" />
-              </b-button>
+              <b-input type="text" v-model="cat.text" @input="catChange(idx)" />
+              <b-icon
+                v-if="cat.dirty"
+                class="h4 mt-2 ml-1 pointer"
+                icon="check-circle"
+                variant="success"
+                @click="saveCat(idx)"
+              />
+              <b-icon
+                v-else
+                class="h4 mt-2 ml-1 pointer"
+                icon="trash"
+                variant="danger"
+                @click="removeCat(idx)"
+              />
             </div>
           </div>
         </b-form>
@@ -151,11 +172,7 @@
           <b-button variant="info" @click="$bvModal.hide('categories-panel')"
             >Annuler</b-button
           >
-          <b-button
-            @click="submitChanges(), $bvModal.hide('categories-panel')"
-            variant="success"
-            >Valider</b-button
-          >
+          <!-- <b-button @click="saveCats()" variant="success">Valider</b-button> -->
         </b-container>
       </template>
     </b-modal>
@@ -180,6 +197,7 @@ export default {
       comments: null,
       hearted: null,
       cats: [],
+      newCat: "",
     };
   },
 
@@ -187,20 +205,64 @@ export default {
     const quizzes = await AdminQuiz.getAllQuizzWithStats();
     this.allQuizz = quizzes.data;
     this.quizz = quizzes.data;
-    let categories = await AdminQuiz.getCategories();
-    categories.data.map((c) => (c.orginal = c.text));
-    this.cats = categories.data;
-    this.options = [{ text: "Techno / Langage : tous", value: "" }].concat(
-      categories.data
-    );
-    console.log(this.cats);
+    this.loadCats();
   },
-  computed: {},
+
   methods: {
-    removeCat(e) {
-      console.log(e); //.target.original == e.target.value);
-      //return e.target.original == e.target.value;
-      return false;
+    async loadCats() {
+      let categories = await AdminQuiz.getCategories();
+      categories.data.map((c) => {
+        c.dirty = false;
+        c.original = c.text;
+      });
+      this.cats = categories.data;
+      this.options = [{ text: "Techno / Langage : tous", value: "" }].concat(
+        categories.data
+      );
+    },
+    catChange(idx) {
+      this.cats[idx].dirty = this.cats[idx].text !== this.cats[idx].original;
+    },
+    catClose() {
+      this.cats.map((c) => {
+        if (c.value) {
+          c.text = c.original;
+          c.dirty = false;
+        }
+      });
+    },
+    async removeCat(idx) {
+      try {
+        const addCat = await AdminQuiz.deleteCategory(this.cats[idx].value);
+        await this.loadCats();
+        this.toast("Info", "Supprimé avec succès", false);
+      } catch (e) {
+        this.toast("Erreur!", e.response.data.message, true);
+      }
+    },
+    async addCat() {
+      try {
+        const addCat = await AdminQuiz.addCategory({
+          data: { name: this.newCat },
+        });
+        await this.loadCats();
+        this.toast("Info", "Ajouté avec succès", false);
+        this.newCat = "";
+      } catch (e) {
+        this.toast("Erreur!", e.message, true);
+      }
+    },
+    async saveCat(idx) {
+      try {
+        const updateCat = await AdminQuiz.saveCategory({
+          categoryId: this.cats[idx].value,
+          data: { name: this.cats[idx].text },
+        });
+        await this.loadCats();
+        this.toast("Info", "Mis à jour avec succès", false);
+      } catch (e) {
+        this.toast("Erreur!", e.message, true);
+      }
     },
     publishToggle(idx) {
       let quizId = this.quizz[idx].id;
@@ -221,6 +283,14 @@ export default {
         });
         this.quizz = filteredQuizz;
       }
+    },
+    toast(title, message, faulty = false) {
+      this.$root.$bvToast.toast(message, {
+        title: title,
+        toaster: "b-toaster-top-center",
+        variant: faulty ? "danger" : "success",
+        appendToast: true,
+      });
     },
   },
 };
